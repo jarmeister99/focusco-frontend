@@ -1,0 +1,6 @@
+<div style="width: 25em; margin-bottom: 1em;">
+    <ng-multiselect-dropdown [placeholder]="'Select some contacts'" [settings]="dropdownSettings" [data]="dropdownList"
+        [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)" (onDeSelect)="onDeSelect($event)">
+    </ng-multiselect-dropdown>
+</div>

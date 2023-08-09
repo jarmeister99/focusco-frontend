@@ -1,0 +1,4 @@
+<div *ngIf="message" [ngStyle]="isFromSelf(message) ? { } : { 'text-align': 'right' }">
+    <p [ngStyle]="isFromSelf(message) ? { } : { 'text-align': 'right' }">{{parseTimestamp(message.timestamp)}}</p>
+    <p>{{message.body}}</p>
+</div>

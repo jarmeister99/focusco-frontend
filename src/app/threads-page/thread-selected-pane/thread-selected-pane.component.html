@@ -1,0 +1,8 @@
+<div style="width: 25em; margin: 1.5em;">
+    <p style="text-align: center">{{threadService.selectedThread?.contact?.name}}</p>
+    <hr>
+    <div *ngFor="let message of threadService.selectedThread?.messages">
+        <app-message [message]="message"></app-message>
+    </div>
+    <app-message-sender></app-message-sender>
+</div>

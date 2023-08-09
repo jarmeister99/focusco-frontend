@@ -1,0 +1,5 @@
+<div style="border: 1px solid black; margin: 1em; padding: 0.5em; width: 10em;" *ngIf="thread"
+    (click)="onThreadSelected()">
+    <p>{{thread.contact.name}}</p>
+    <p>({{thread.contact.number}})</p>
+</div>
