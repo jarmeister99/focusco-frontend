@@ -1,20 +1,36 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Thread } from '../models/thread.model';
 import { ThreadsService } from './threads.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThreadSelectorService {
-    threads: Thread[] = [];
-    selectedThread: Thread | undefined = undefined;
+  private threadsSubject: BehaviorSubject<Thread[]> = new BehaviorSubject<
+    Thread[]
+  >([]);
 
-    constructor(readonly threadsService: ThreadsService) {
-        this.threads = threadsService.getThreads();
-        this.selectedThread = this.threads[0];
-    }
+  private selectedThreadSubject: BehaviorSubject<Thread | undefined> =
+    new BehaviorSubject<Thread | undefined>(undefined);
 
-    selectThread(thread: Thread) {
-        this.selectedThread = thread;
-    }
+  // When this service is first created
+  constructor(readonly threadsService: ThreadsService) {
+    // We want to get the threads from the threads service (which gets them from the API)
+    this.threadsService.getThreads().subscribe((threads) => {
+      this.threadsSubject.next(threads);
+      this.selectedThreadSubject.next(threads[0]);
+    });
+  }
+
+  getThreads(): Observable<Thread[]> {
+    return this.threadsSubject.asObservable();
+  }
+  getSelectedThreads(): Observable<Thread | undefined> {
+    return this.selectedThreadSubject.asObservable();
+  }
+
+  selectThread(thread: Thread) {
+    this.selectedThreadSubject.next(thread);
+  }
 }

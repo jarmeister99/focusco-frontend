@@ -6,27 +6,27 @@ import { ContactsService } from 'src/app/services/contacts.service';
 @Component({
   selector: 'app-multi-contact-selector',
   templateUrl: './multi-contact-selector.component.html',
-  styleUrls: ['./multi-contact-selector.component.scss']
+  styleUrls: ['./multi-contact-selector.component.scss'],
 })
 export class MultiContactSelectorComponent {
   dropdownList: Contact[] = [];
   selectedItems: Contact[] = [];
   dropdownSettings: any;
 
-  constructor(public readonly contactsService: ContactsService, public readonly contactSelectorService: ContactSelectorService) { };
+  constructor(
+    public readonly contactsService: ContactsService,
+    public readonly contactSelectorService: ContactSelectorService
+  ) {}
 
   ngOnInit() {
-    const contacts = this.contactsService.getContacts();
-    // create dropdown list from contacts
-    contacts.forEach(contact => {
-      this.dropdownList.push(contact);
+    this.contactsService.getContacts().subscribe((contacts) => {
+      this.dropdownList = contacts;
     });
 
-    this.dropdownList = contacts;
     this.selectedItems = this.contactSelectorService.selectedContacts;
     this.dropdownSettings = {
       singleSelection: false,
-      idField: 'number',
+      idField: '_id',
       textField: 'name',
       selectAllText: 'Select All',
       unSelectAllText: 'Unselect All',
@@ -45,5 +45,4 @@ export class MultiContactSelectorComponent {
   onDeSelectAll(items: any) {
     this.contactSelectorService.clearSelectedContacts();
   }
-
 }

@@ -1,0 +1,25 @@
+<input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)">
+
+<div [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'width': width, 'padding': '1em'}">
+    <div>
+        <mat-icon style="cursor: pointer;" *ngIf="hasEmojiSelector" (click)="onShowEmojiMartClick()"
+            matSuffix>sentiment_very_satisfied</mat-icon>
+        <mat-icon style="cursor: pointer; margin-left: 0.5em;" *ngIf="hasMediaSelector" (click)="fileInput.click()"
+            matSuffix>mms</mat-icon>
+        <mat-icon style="cursor: pointer; margin-left: 0.5em;" [matTooltip]="fileSelected.name" *ngIf="fileSelected"
+            (click)="onRemoveFileClick()" matSuffix>close</mat-icon>
+    </div>
+
+    <form [formGroup]="inputForm">
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>{{ label }}</mat-label>
+            <textarea style="overflow-y: hidden" matInput formControlName="inputText" [placeholder]="placeholder">
+            </textarea>
+
+        </mat-form-field>
+        <button (click)="send()" mat-raised-button color="primary">Send</button>
+    </form>
+    <emoji-mart [style]="{'width': '100%'}" *ngIf="emojiMartVisible" title="Pick your emoji…"
+        (emojiSelect)="addEmoji($event)" [hideObsolete]="true" [isNative]="true">
+    </emoji-mart>
+</div>

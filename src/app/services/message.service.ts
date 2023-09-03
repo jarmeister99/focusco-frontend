@@ -1,19 +1,54 @@
 import { Injectable } from '@angular/core';
 import { Message } from '../models/message.model';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
+import { Thread } from '../models/thread.model';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class MessageService {
+  apiUrl = 'http://localhost:3000/messages';
+  private messagesSubject: BehaviorSubject<Message[]> = new BehaviorSubject<
+    Message[]
+  >([]);
 
-    constructor() { }
+  contacts: Message[] = [];
+  constructor(private http: HttpClient) {
+    this.fetchMessagesFromApi();
+  }
 
-    sendMessage(message: Message) {
-        console.log(`Sending message: ${message.body} to ${message.receiver.name}`)
+  private fetchMessagesFromApi(): void {
+    this.http.get<Message[]>(this.apiUrl).subscribe((messages) => {
+      this.messagesSubject.next(messages);
+    });
+  }
+
+  getMessages(): Observable<Message[]> {
+    return this.messagesSubject.asObservable();
+  }
+
+  sendMessage(message: Message) {
+    let threadId;
+    if (!(message.thread instanceof Thread)) {
+      threadId = message.thread;
+    } else {
+      threadId = message.thread._id;
     }
-    sendMessages(messages: Message[]) {
-        messages.forEach(message => {
-            this.sendMessage(message);
-        })
-    }
+    const payload = {
+      receiverContactId: message.receiver._id,
+      body: message.body,
+      threadId: threadId,
+    };
+    return this.http.post<Message>(this.apiUrl, payload).pipe(
+      tap((newMessage) => {
+        const updatedMessages = [...this.messagesSubject.value, newMessage];
+        this.messagesSubject.next(updatedMessages);
+      }),
+      catchError((error) => {
+        console.error('Error sending message:', error);
+        throw error;
+      })
+    );
+  }
 }

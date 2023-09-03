@@ -1,1 +1,5 @@
-<p>autoreply-page works!</p>
+<div style="margin: 1.5em">
+    <div *ngFor="let contact of contacts">
+        <app-autoreply-box [contact]="contact"></app-autoreply-box>
+    </div>
+</div>

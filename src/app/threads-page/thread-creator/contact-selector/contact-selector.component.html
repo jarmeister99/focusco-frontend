@@ -1,0 +1,3 @@
+<select (ngModelChange)="onSelect($event)" id="options" [(ngModel)]="selectedContactId">
+  <option *ngFor="let option of options" [value]="option.value">{{ option.label }}</option>
+</select>
