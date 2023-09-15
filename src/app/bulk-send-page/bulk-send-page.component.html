@@ -1,8 +1,9 @@
 <div style="margin: 1.5em">
     <app-multi-contact-selector></app-multi-contact-selector>
-    <div *ngFor="let contact of this.contactSelectorService.selectedContacts">
+    <div *ngFor="let contact of this.selectedContacts">
         <p>{{contact.name}}</p>
         <p>{{contact.number}}</p>
     </div>
-    <app-bulk-message-sender></app-bulk-message-sender>
+    <app-send-message *ngIf="shouldShowMessageSender()" [width]="'50em'"
+        (sendEventEmitter)="onMessageSend($event)"></app-send-message>
 </div>

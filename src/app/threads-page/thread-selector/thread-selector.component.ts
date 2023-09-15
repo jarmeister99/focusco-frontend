@@ -9,10 +9,10 @@ import { ThreadSelectorService } from 'src/app/services/thread-selector.service'
 })
 export class ThreadSelectorComponent implements OnInit {
   threads: Thread[] = [];
-  constructor(public readonly threadSelectorService: ThreadSelectorService) {}
+  constructor(public readonly threadSelectorService: ThreadSelectorService) { }
 
   ngOnInit(): void {
-    this.threadSelectorService.getThreads().subscribe((threads) => {
+    this.threadSelectorService.getThreadsObservable().subscribe((threads) => {
       this.threads = threads;
     });
   }

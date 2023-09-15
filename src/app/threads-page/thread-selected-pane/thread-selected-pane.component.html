@@ -4,5 +4,6 @@
     <div *ngFor="let message of messagesForThread">
         <app-message [message]="message"></app-message>
     </div>
-    <app-message-sender></app-message-sender>
+
+    <app-send-message (sendEventEmitter)="onMessageSend($event)"></app-send-message>
 </div>

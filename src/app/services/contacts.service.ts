@@ -1,7 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Contact } from '../models/contact.model';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
+import { Contact } from '../models/contact.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +15,16 @@ export class ContactsService {
   contacts: Contact[] = [];
   constructor(private http: HttpClient) {
     this.fetchContactsFromApi();
+  }
+
+  getContactById(id: string): Contact | undefined {
+    const foundContact = this.contactsSubject.value.find((c) => c._id === id);
+    if (foundContact) {
+      return foundContact;
+    }
+    else {
+      return undefined;
+    }
   }
 
   updateContactAutoreply(contact: Contact, autoreplyText: string): void {

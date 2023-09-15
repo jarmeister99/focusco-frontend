@@ -1,4 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Contact, checkEquality } from '../models/contact.model';
 import { ContactsService } from './contacts.service';
 
@@ -7,10 +8,9 @@ import { ContactsService } from './contacts.service';
 })
 export class ContactSelectorService implements OnInit {
   contacts: Contact[] = [];
-  selectedContacts: Contact[] = [];
+  selectedContacts: BehaviorSubject<Contact[]> = new BehaviorSubject<Contact[]>([]);
 
   constructor(readonly contactsService: ContactsService) {
-    this.selectedContacts = [];
   }
 
   ngOnInit() {
@@ -21,19 +21,16 @@ export class ContactSelectorService implements OnInit {
 
   addSelectedContact(contact: Contact) {
     // check to see if contact is already in selectedContacts using checkEquality
-    if (
-      !this.selectedContacts.some((selectedContact) =>
-        checkEquality(selectedContact, contact)
-      )
-    ) {
-      this.selectedContacts.push(contact);
+    // if it is not, add it to selectedContacts
+    if (!this.selectedContacts.value.some((selectedContact) => checkEquality(selectedContact, contact))) {
+      this.selectedContacts.next([...this.selectedContacts.value, contact]);
     }
   }
   removeSelectedContact(contact: Contact) {
     // remove contact from selectedContacts if it is in selectedContacts
-    this.selectedContacts = this.selectedContacts.filter(
-      (selectedContact) => !checkEquality(selectedContact, contact)
-    );
+    if (this.selectedContacts.value.some((selectedContact) => checkEquality(selectedContact, contact))) {
+      this.selectedContacts.next(this.selectedContacts.value.filter((selectedContact) => !checkEquality(selectedContact, contact)));
+    }
   }
   addMultipleSelectedContacts(contacts: Contact[]) {
     // add multiple contacts to selectedContacts
@@ -48,6 +45,7 @@ export class ContactSelectorService implements OnInit {
     });
   }
   clearSelectedContacts() {
-    this.selectedContacts = [];
+    // clear selectedContacts
+    this.selectedContacts.next([]);
   }
 }

@@ -16,14 +16,16 @@ export class MultiContactSelectorComponent {
   constructor(
     public readonly contactsService: ContactsService,
     public readonly contactSelectorService: ContactSelectorService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.contactsService.getContacts().subscribe((contacts) => {
       this.dropdownList = contacts;
     });
+    this.contactSelectorService.selectedContacts.subscribe((contacts) => {
+      this.selectedItems = contacts;
+    });
 
-    this.selectedItems = this.contactSelectorService.selectedContacts;
     this.dropdownSettings = {
       singleSelection: false,
       idField: '_id',
@@ -34,13 +36,30 @@ export class MultiContactSelectorComponent {
     };
   }
   onItemSelect(item: any) {
-    this.contactSelectorService.addSelectedContact(item);
+    const contact = this.contactsService.getContactById(item._id);
+    if (!contact) {
+      throw new Error('Contact not found');
+    }
+    this.contactSelectorService.addSelectedContact(contact);
   }
   onSelectAll(items: any) {
-    this.contactSelectorService.addMultipleSelectedContacts(items);
+    const contactsToAdd: Contact[] = [];
+    for (let item of items) {
+      const contact = this.contactsService.getContactById(item._id);
+      if (!contact) {
+        throw new Error('Contact not found');
+      }
+      contactsToAdd.push(contact);
+    }
+    this.contactSelectorService.addMultipleSelectedContacts(contactsToAdd);
   }
+
   onDeSelect(item: any) {
-    this.contactSelectorService.removeSelectedContact(item);
+    const contact = this.contactsService.getContactById(item._id);
+    if (!contact) {
+      throw new Error('Contact not found');
+    }
+    this.contactSelectorService.removeSelectedContact(contact);
   }
   onDeSelectAll(items: any) {
     this.contactSelectorService.clearSelectedContacts();

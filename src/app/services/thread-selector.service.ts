@@ -1,7 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Thread } from '../models/thread.model';
 import { ThreadsService } from './threads.service';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class ThreadSelectorService {
     });
   }
 
-  getThreads(): Observable<Thread[]> {
+  getThreadsObservable(): Observable<Thread[]> {
     return this.threadsSubject.asObservable();
   }
   getSelectedThreads(): Observable<Thread | undefined> {

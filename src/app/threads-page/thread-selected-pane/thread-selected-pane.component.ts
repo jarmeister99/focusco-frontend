@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SendMessagePayload } from 'src/app/library/send-message/send-message.component';
+import { getSelfContact } from 'src/app/models/contact.model';
 import { Message } from 'src/app/models/message.model';
 import { Thread } from 'src/app/models/thread.model';
 import { MessageService } from 'src/app/services/message.service';
@@ -16,7 +18,7 @@ export class ThreadSelectedPaneComponent implements OnInit {
   constructor(
     public readonly threadSelectorService: ThreadSelectorService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.threadSelectorService.getSelectedThreads().subscribe((thread) => {
@@ -39,5 +41,19 @@ export class ThreadSelectedPaneComponent implements OnInit {
         }
       });
     });
+  }
+
+  onMessageSend(messageData: SendMessagePayload) {
+    if (this.selectedThread) {
+      const newMessage = new Message(
+        getSelfContact(),
+        this.selectedThread.contact,
+        messageData.text,
+        this.selectedThread,
+        Date.now(),
+        messageData.link
+      );
+      this.messageService.sendMessage(newMessage, messageData).subscribe();
+    }
   }
 }
