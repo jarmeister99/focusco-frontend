@@ -9,6 +9,7 @@ export class Message {
     public thread: Thread | undefined | string,
     public timestamp: number,
     public link?: string,
+    public isVcf?: boolean,
     public _id?: string
   ) { }
 }

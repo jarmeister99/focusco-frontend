@@ -70,4 +70,5 @@ import { ThreadsPageComponent } from './threads-page/threads-page.component';
   providers: [ThreadsService, ThreadSelectorService, MessageService],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+}

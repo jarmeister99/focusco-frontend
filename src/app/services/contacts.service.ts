@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, interval, startWith, switchMap, tap } from 'rxjs';
 import { Contact } from '../models/contact.model';
 
 @Injectable({
@@ -15,6 +15,32 @@ export class ContactsService {
   contacts: Contact[] = [];
   constructor(private http: HttpClient) {
     this.fetchContactsFromApi();
+    const checkInterval$ = interval(5000);
+
+    // Use switchMap to switch to a new observable whenever the timer emits
+    checkInterval$
+      .pipe(
+        startWith(0), // Start with an initial emission to trigger the first API call
+        switchMap(() => this.fetchContactsFromApi())
+      )
+      .subscribe((contacts) => {
+        // if contacts is different from this.contactsSubject.value, then update this.contactsSubject
+        if (!this.compareContactsLists(contacts, this.contactsSubject.value)) {
+          this.contactsSubject.next(contacts);
+        }
+      });
+  }
+
+  private compareContactsLists(contacts1: Contact[], contacts2: Contact[]): boolean {
+    if (contacts1.length !== contacts2.length) {
+      return false;
+    }
+    for (let i = 0; i < contacts1.length; i++) {
+      if (contacts1[i]._id !== contacts2[i]._id) {
+        return false;
+      }
+    }
+    return true;
   }
 
   getContactById(id: string): Contact | undefined {
@@ -46,19 +72,8 @@ export class ContactsService {
       });
   }
 
-  private fetchContactsFromApi(): void {
-    this.http
-      .get<Contact[]>(this.apiUrl)
-      .pipe(
-        catchError((error) => {
-          console.error('Error fetching contacts:', error);
-          return [];
-        }),
-        tap((contacts) => {
-          this.contactsSubject.next(contacts);
-        })
-      )
-      .subscribe();
+  private fetchContactsFromApi(): Observable<Contact[]> {
+    return this.http.get<Contact[]>(this.apiUrl);
   }
 
   getContacts(): Observable<Contact[]> {
@@ -93,5 +108,25 @@ export class ContactsService {
           throw error;
         })
       );
+  }
+
+  updateContactName(contact: Contact, name: string) {
+    return this.http.post<Contact>(`${this.apiUrl}/updateNameByNumber`, { name: name, number: contact.number }).pipe(
+      tap((updatedContact) => {
+        const updatedContacts = this.contactsSubject.value.map((c) => {
+          if (c._id === updatedContact._id) {
+            return updatedContact;
+          } else {
+            return c;
+          }
+        });
+        console.log(updatedContacts)
+        this.contactsSubject.next(updatedContacts);
+      }),
+      catchError((error) => {
+        console.error('Error updating contact name:', error);
+        throw error;
+      })
+    );
   }
 }

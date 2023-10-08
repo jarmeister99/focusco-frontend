@@ -21,7 +21,7 @@ export class MessageComponent {
     return `${month}-${day} ${hours}:${minutes}`;
   }
 
-  isFromSelf(message: Message) {
-    return checkEquality(message.sender, getSelfContact());
+  isFromOwner(message: Message) {
+    return checkEquality(message.receiver, getSelfContact());
   }
 }

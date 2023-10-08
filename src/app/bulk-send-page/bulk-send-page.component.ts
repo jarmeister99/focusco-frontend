@@ -27,7 +27,9 @@ export class BulkSendPageComponent {
           contact,
           messageData.text,
           thread,
-          Date.now()
+          Date.now(),
+          messageData.link,
+          messageData.sendVcf
         );
         this.messageService.sendMessage(message).subscribe();
       }
@@ -39,7 +41,9 @@ export class BulkSendPageComponent {
             contact,
             messageData.text,
             thread,
-            Date.now()
+            Date.now(),
+            messageData.link,
+            messageData.sendVcf
           );
           this.messageService.sendMessage(message).subscribe();
         });

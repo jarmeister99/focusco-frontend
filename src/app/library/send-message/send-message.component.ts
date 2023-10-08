@@ -64,7 +64,8 @@ export class SendMessageComponent {
     this.sendMessagePayload = {
       text: '',
       file: null,
-      link: undefined
+      link: undefined,
+      sendVcf: false
     };
     this.placeholder = 'Type a message';
     this.label = 'Message';
@@ -79,6 +80,7 @@ export class SendMessageComponent {
   send() {
     this.sendMessagePayload.text = this.inputForm.get('inputText')?.value;
     this.sendMessagePayload.link = this.inputForm.get('inputLink')?.value;
+
     this.inputForm.setValue({
       inputText: '',
       inputLink: ''
@@ -87,8 +89,8 @@ export class SendMessageComponent {
     this.sendEventEmitter.emit(this.sendMessagePayload);
   }
   sendVcf() {
-    this.sendMessagePayload = {
-      text: '',
+    const vcfPayload = {
+      text: this.inputForm.get('inputText')?.value,
       file: null,
       link: undefined,
       sendVcf: true
@@ -97,7 +99,7 @@ export class SendMessageComponent {
       inputText: '',
       inputLink: ''
     });
-    this.sendEventEmitter.emit(this.sendMessagePayload);
+    this.sendEventEmitter.emit(vcfPayload);
   }
   addEmoji($event: any) {
     const currentText = this.inputForm.get('inputText')?.value;

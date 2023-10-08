@@ -3,4 +3,9 @@
     <p>{{contact.number}}</p>
     <p>{{contact._id}}</p>
     <button (click)="deleteContact(contact)">Delete</button>
+    <button (click)="editContact()">Edit</button>
+    <div *ngIf="editPanelVisible">
+        <input [(ngModel)]="newContactName" placeholder="Name">
+        <button (click)="submitEditContact()">Confirm</button>
+    </div>
 </div>

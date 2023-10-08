@@ -4,7 +4,7 @@ export class Contact {
     public number: string,
     public _id?: string,
     public autoreplyText?: string
-  ) {}
+  ) { }
 }
 export const checkEquality = (c1: Contact, c2: Contact) => {
   return c1.name === c2.name && c1.number === c2.number;
@@ -34,5 +34,5 @@ export const getRandomContact = () => {
 };
 
 export const getSelfContact = () => {
-  return new Contact('Me', '+1-555-123-4567');
+  return new Contact('Owner', '+18444362879');
 };

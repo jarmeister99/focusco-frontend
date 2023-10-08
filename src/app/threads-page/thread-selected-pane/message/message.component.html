@@ -1,4 +1,6 @@
-<div *ngIf="message" [ngStyle]="isFromSelf(message) ? { } : { 'text-align': 'right' }">
-    <p [ngStyle]="isFromSelf(message) ? { } : { 'text-align': 'right' }">{{parseTimestamp(message.timestamp)}}</p>
+<div *ngIf="message" [ngStyle]="isFromOwner(message) ? { } : { 'text-align': 'right' }">
+    <p [ngStyle]="isFromOwner(message) ? { } : { 'text-align': 'right' }">{{parseTimestamp(message.timestamp)}}</p>
     <p>{{message.body}}</p>
+    <p *ngIf="message.link">link:{{message.link}}</p>
+    <p *ngIf="message.isVcf">content:vcf</p>
 </div>

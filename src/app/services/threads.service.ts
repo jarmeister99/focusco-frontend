@@ -1,7 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Contact } from '../models/contact.model';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, catchError, interval, startWith, switchMap, tap } from 'rxjs';
 import { Thread } from '../models/thread.model';
 
 @Injectable({
@@ -16,21 +15,22 @@ export class ThreadsService {
   contacts: Thread[] = [];
   constructor(private http: HttpClient) {
     this.fetchThreadsFromApi();
+    const checkInterval$ = interval(5000);
+
+    // Use switchMap to switch to a new observable whenever the timer emits
+    checkInterval$
+      .pipe(
+        startWith(0), // Start with an initial emission to trigger the first API call
+        switchMap(() => this.fetchThreadsFromApi())
+      )
+      .subscribe((threads) => {
+        this.threadsSubject.next(threads);
+      });
   }
 
-  private fetchThreadsFromApi(): void {
-    this.http
-      .get<Thread[]>(this.apiUrl)
-      .pipe(
-        catchError((error) => {
-          console.error('Error fetching threads:', error);
-          return [];
-        }),
-        tap((threads) => {
-          this.threadsSubject.next(threads);
-        })
-      )
-      .subscribe();
+  // Fetch messages from the API and return an observable
+  private fetchThreadsFromApi(): Observable<Thread[]> {
+    return this.http.get<Thread[]>(this.apiUrl);
   }
 
   getThreads(): Observable<Thread[]> {
