@@ -9,10 +9,15 @@ import { ContactsService } from 'src/app/services/contacts.service';
 })
 export class ContactListComponent implements OnInit {
   contacts: Contact[] = [];
-  constructor(public readonly contactsService: ContactsService) {}
+  constructor(public readonly contactsService: ContactsService) { }
   ngOnInit() {
     this.contactsService.getContacts().subscribe((contacts) => {
-      this.contacts = contacts;
+      if (!(this.contactsService.compareContactsLists(contacts, this.contacts))) {
+        this.contacts = contacts;
+      }
+      else if (this.contacts.length === 0) {
+        this.contacts = contacts;
+      }
     });
   }
 }

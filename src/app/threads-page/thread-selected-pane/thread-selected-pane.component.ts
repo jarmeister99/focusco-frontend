@@ -51,10 +51,11 @@ export class ThreadSelectedPaneComponent implements OnInit {
         messageData.text,
         this.selectedThread,
         Date.now(),
+        true,
         messageData.link,
         messageData.sendVcf
       );
-      this.messageService.sendMessage(newMessage, messageData).subscribe();
+      this.messageService.sendMessage(newMessage).subscribe();
     }
   }
 }

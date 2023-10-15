@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, interval, startWith, switchMap, tap } from 'rxjs';
-import { SendMessagePayload } from '../library/send-message/send-message.component';
 import { Message } from '../models/message.model';
 import { Thread } from '../models/thread.model';
 
@@ -27,7 +26,6 @@ export class MessageService {
       .subscribe((messages) => {
         this.messagesSubject.next(messages);
       });
-
   }
 
   // Fetch messages from the API and return an observable
@@ -35,11 +33,29 @@ export class MessageService {
     return this.http.get<Message[]>(this.apiUrl);
   }
 
+  markMessagesAsSeen(messages: Message[]): Observable<Message[]> {
+    const messageIds = messages.map((message) => message._id);
+    const payload = {
+      messageIds: messageIds,
+    };
+    return this.http.put<Message[]>(this.apiUrl + '/seen', payload).pipe(
+      tap(() => {
+        this.fetchMessagesFromApi().subscribe((messages) => {
+          this.messagesSubject.next(messages);
+        });
+      }),
+      catchError((error) => {
+        console.error('Error marking messages as seen:', error);
+        throw error;
+      })
+    );
+  }
+
   getMessages(): Observable<Message[]> {
     return this.messagesSubject.asObservable();
   }
 
-  sendMessage(message: Message, messageData?: SendMessagePayload) {
+  sendMessage(message: Message) {
     let threadId;
     if (!(message.thread instanceof Thread)) {
       threadId = message.thread;
@@ -51,7 +67,7 @@ export class MessageService {
       body: message.body,
       threadId: threadId,
       link: message.link,
-      sendVcf: messageData?.sendVcf
+      sendVcf: message.isVcf
     };
 
     return this.http.post<Message>(this.apiUrl, payload).pipe(

@@ -19,7 +19,6 @@ export class ThreadSelectorService {
     // We want to get the threads from the threads service (which gets them from the API)
     this.threadsService.getThreads().subscribe((threads) => {
       this.threadsSubject.next(threads);
-      this.selectedThreadSubject.next(threads[0]);
     });
   }
 

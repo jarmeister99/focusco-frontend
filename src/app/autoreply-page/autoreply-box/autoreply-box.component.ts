@@ -16,17 +16,21 @@ export class AutoreplyBoxComponent implements OnInit {
   constructor(
     private contactsService: ContactsService,
     private formBuilder: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.contactForm = this.formBuilder.group({
-      autoreply: [this.contact?.autoreplyText, Validators.required],
+      autoreply: ['', Validators.required],
     });
   }
 
   updateAutoreply(autoreplyText: string): void {
     if (this.contact) {
       this.contactsService.updateContactAutoreply(this.contact, autoreplyText);
+
+      // clear contactForm value
+      this.contactForm?.reset();
+
     }
   }
 

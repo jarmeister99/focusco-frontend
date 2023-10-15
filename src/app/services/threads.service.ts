@@ -33,6 +33,16 @@ export class ThreadsService {
     return this.http.get<Thread[]>(this.apiUrl);
   }
 
+  markMessagesAsSeen(thread: Thread) {
+    return this.http.post<Thread>(`${this.apiUrl}/seen`, { _id: thread._id })
+      .pipe(
+        catchError((error) => {
+          console.error('Error marking messages as seen:', error);
+          throw error;
+        })
+      );
+  }
+
   getThreads(): Observable<Thread[]> {
     return this.threadsSubject.asObservable();
   }

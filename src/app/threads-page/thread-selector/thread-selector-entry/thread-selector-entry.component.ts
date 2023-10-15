@@ -13,11 +13,16 @@ export class ThreadSelectorEntryComponent {
 
   constructor(
     public readonly threadSelectorService: ThreadSelectorService,
-    private threadsService: ThreadsService
-  ) {}
+    private threadsService: ThreadsService,
+  ) { }
+
+
 
   onThreadSelected() {
     this.threadSelectorService.selectThread(this.thread!);
+    if (this.hasUnreadMessages()) {
+      this.threadsService.markMessagesAsSeen(this.thread!).subscribe();
+    }
   }
 
   onDelete() {
@@ -25,5 +30,18 @@ export class ThreadSelectorEntryComponent {
       return;
     }
     this.threadsService.deleteThread(this.thread).subscribe();
+  }
+
+  hasUnreadMessages() {
+
+    if (!this.thread) {
+      return false;
+    }
+    for (const message of this.thread.messages) {
+      if (message.seen === false) {
+        return true;
+      }
+    }
+    return false;
   }
 }

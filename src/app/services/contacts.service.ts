@@ -24,14 +24,11 @@ export class ContactsService {
         switchMap(() => this.fetchContactsFromApi())
       )
       .subscribe((contacts) => {
-        // if contacts is different from this.contactsSubject.value, then update this.contactsSubject
-        if (!this.compareContactsLists(contacts, this.contactsSubject.value)) {
-          this.contactsSubject.next(contacts);
-        }
+        this.contactsSubject.next(contacts);
       });
   }
 
-  private compareContactsLists(contacts1: Contact[], contacts2: Contact[]): boolean {
+  compareContactsLists(contacts1: Contact[], contacts2: Contact[]): boolean {
     if (contacts1.length !== contacts2.length) {
       return false;
     }
@@ -51,6 +48,12 @@ export class ContactsService {
     else {
       return undefined;
     }
+  }
+
+  updateAllAutoreply(autoreplyText: string): void {
+    this.contactsSubject.value.forEach((contact) => {
+      this.updateContactAutoreply(contact, autoreplyText);
+    });
   }
 
   updateContactAutoreply(contact: Contact, autoreplyText: string): void {
@@ -120,7 +123,6 @@ export class ContactsService {
             return c;
           }
         });
-        console.log(updatedContacts)
         this.contactsSubject.next(updatedContacts);
       }),
       catchError((error) => {

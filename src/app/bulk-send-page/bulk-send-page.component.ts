@@ -28,6 +28,7 @@ export class BulkSendPageComponent {
           messageData.text,
           thread,
           Date.now(),
+          false,
           messageData.link,
           messageData.sendVcf
         );
@@ -42,6 +43,7 @@ export class BulkSendPageComponent {
             messageData.text,
             thread,
             Date.now(),
+            false,
             messageData.link,
             messageData.sendVcf
           );
