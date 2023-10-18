@@ -1,9 +1,0 @@
-<div style="width: 25em; margin: 1.5em;">
-    <p style="text-align: center">{{selectedThread?.contact?.name}}</p>
-    <hr>
-    <div *ngFor="let message of messagesForThread">
-        <app-message [message]="message"></app-message>
-    </div>
-
-    <app-send-message (sendEventEmitter)="onMessageSend($event)"></app-send-message>
-</div>

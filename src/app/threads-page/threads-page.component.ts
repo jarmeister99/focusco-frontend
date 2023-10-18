@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ExportService } from '../services/export.service';
+import { ThreadsService } from '../services/threads.service';
 
 @Component({
   selector: 'app-threads-page',
@@ -7,14 +7,8 @@ import { ExportService } from '../services/export.service';
   styleUrls: ['./threads-page.component.scss']
 })
 export class ThreadsPageComponent {
-  onClickExportMessages() {
-    this.exportService.getAllMessages().subscribe((data) => {
-      const blob = new Blob([data], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url);
-    });
-  }
+  constructor(private threadsService: ThreadsService) {
 
-  constructor(private exportService: ExportService) {
+    this.threadsService.getThreadsOnInterval$().subscribe();
   }
 }

@@ -1,81 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, interval, startWith, switchMap, tap } from 'rxjs';
-import { Thread } from '../models/thread.model';
+import { interval, switchMap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ThreadsService {
-  apiUrl = 'http://localhost:3000/threads';
-  private threadsSubject: BehaviorSubject<Thread[]> = new BehaviorSubject<
-    Thread[]
-  >([]);
+  API_URL = 'http://localhost:3000/threads';
 
-  contacts: Thread[] = [];
   constructor(private http: HttpClient) {
-    this.fetchThreadsFromApi();
-    const checkInterval$ = interval(5000);
-
-    // Use switchMap to switch to a new observable whenever the timer emits
-    checkInterval$
-      .pipe(
-        startWith(0), // Start with an initial emission to trigger the first API call
-        switchMap(() => this.fetchThreadsFromApi())
-      )
-      .subscribe((threads) => {
-        this.threadsSubject.next(threads);
+    interval(5000).subscribe(() => {
+      this.getThreads().pipe().subscribe((res: any) => {
+        console.log(res);
       });
+    });
   }
 
-  // Fetch messages from the API and return an observable
-  private fetchThreadsFromApi(): Observable<Thread[]> {
-    return this.http.get<Thread[]>(this.apiUrl);
+  // create a function that returns an observable that returns the result of getThreads every 5000 ms
+  getThreadsOnInterval$() {
+    return interval(5000).pipe(
+      switchMap(() => this.getThreads())
+    );
   }
 
-  markMessagesAsSeen(thread: Thread) {
-    return this.http.post<Thread>(`${this.apiUrl}/seen`, { _id: thread._id })
-      .pipe(
-        catchError((error) => {
-          console.error('Error marking messages as seen:', error);
-          throw error;
-        })
-      );
-  }
-
-  getThreads(): Observable<Thread[]> {
-    return this.threadsSubject.asObservable();
-  }
-
-  createThread(thread: Thread): Observable<Thread> {
-    return this.http
-      .post<Thread>(this.apiUrl, { contactId: thread.contact._id })
-      .pipe(
-        tap((newThread) => {
-          const updatedThreads = [...this.threadsSubject.value, newThread];
-          this.threadsSubject.next(updatedThreads);
-        }),
-        catchError((error) => {
-          console.error('Error creating contact:', error);
-          throw error;
-        })
-      );
-  }
-
-  deleteThread(thread: Thread): Observable<Thread> {
-    return this.http
-      .post<Thread>(`${this.apiUrl}/delete`, { _id: thread._id })
-      .pipe(
-        tap(() => {
-          const updatedThreads = this.threadsSubject.value.filter(
-            (t) => t._id !== thread._id
-          );
-          this.threadsSubject.next(updatedThreads);
-        }),
-        catchError((error) => {
-          console.error('Error deleting thread:', error);
-          throw error;
-        })
-      );
+  getThreads() {
+    return this.http.get(this.API_URL);
   }
 }

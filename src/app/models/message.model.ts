@@ -1,16 +1,13 @@
-import { Contact } from './contact.model';
-import { Thread } from './thread.model';
+import Thread from "./thread.model";
+import User from "./user.model";
 
-export class Message {
-  constructor(
-    public sender: Contact,
-    public receiver: Contact,
-    public body: string,
-    public thread: Thread | undefined | string,
-    public timestamp: number,
-    public seen: boolean,
-    public link?: string,
-    public isVcf?: boolean,
-    public _id?: string
-  ) { }
+export default interface Message {
+    id: number;
+    body: string;
+    isVcf: boolean;
+    mediaUrl: string;
+    sender: User;
+    receiver: User;
+    createdAt: Date;
+    thread: Thread;
 }
