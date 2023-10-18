@@ -9,4 +9,5 @@ export default interface User {
     messagesReceived: Message[];
     threads: Thread[];
     autoreply?: string;
+    isOwner: boolean;
 }

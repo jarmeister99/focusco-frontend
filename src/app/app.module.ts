@@ -12,17 +12,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { MessagesService } from './services/messages.service';
+import { ThreadSelectorService } from './services/thread-selector.service';
 import { ThreadsService } from './services/threads.service';
+import { ThreadSelectorComponent } from './threads-page/thread-selector/thread-selector.component';
+import { ThreadViewerComponent } from './threads-page/thread-viewer/thread-viewer.component';
 import { ThreadsPageComponent } from './threads-page/threads-page.component';
-import { ThreadComponent } from './threads-page/thread/thread.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ThreadsPageComponent,
-    ThreadComponent
+    ThreadSelectorComponent,
+    ThreadViewerComponent
   ],
   imports: [
     BrowserModule,
@@ -36,9 +41,12 @@ import { ThreadComponent } from './threads-page/thread/thread.component';
     NgMultiSelectDropDownModule.forRoot(),
     FormsModule,
     HttpClientModule,
-    MatCardModule
+    MatCardModule,
+    RouterModule.forRoot([
+      { path: 'threads', component: ThreadsPageComponent },
+    ]),
   ],
-  providers: [ThreadsService],
+  providers: [ThreadsService, ThreadSelectorService, MessagesService],
   bootstrap: [AppComponent],
 })
 export class AppModule {

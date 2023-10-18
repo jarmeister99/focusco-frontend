@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { interval, switchMap } from 'rxjs';
+import { Observable, distinctUntilChanged, interval, map, startWith, switchMap } from 'rxjs';
+import Thread from '../models/thread.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,22 +9,21 @@ import { interval, switchMap } from 'rxjs';
 export class ThreadsService {
   API_URL = 'http://localhost:3000/threads';
 
-  constructor(private http: HttpClient) {
-    interval(5000).subscribe(() => {
-      this.getThreads().pipe().subscribe((res: any) => {
-        console.log(res);
-      });
-    });
-  }
+  constructor(private http: HttpClient) { }
 
-  // create a function that returns an observable that returns the result of getThreads every 5000 ms
+
   getThreadsOnInterval$() {
-    return interval(5000).pipe(
-      switchMap(() => this.getThreads())
-    );
+    return interval(5000) // emits a value every 5 seconds
+      .pipe(
+        startWith(0), // starts immediately
+        switchMap(() => this.getThreads()), // switches to new inner observable when source emits, canceling any previous in-flight requests
+        map(threads => JSON.stringify(threads)), // maps the threads to a JSON string
+        distinctUntilChanged(), // only emits when the current value is different than the last
+        map(threadsString => JSON.parse(threadsString)) // maps the JSON string back to an array of threads
+      );
   }
 
   getThreads() {
-    return this.http.get(this.API_URL);
+    return this.http.get(this.API_URL) as Observable<Thread[]>;
   }
 }

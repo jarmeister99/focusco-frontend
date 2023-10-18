@@ -1,0 +1,15 @@
+// create a variable named selected that is scale(1.03)
+$selectedScale: scale(1.04);
+$selectedShadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.32);
+
+.mat-mdc-card.mdc-card:hover { 
+    transform: $selectedScale;
+    box-shadow: $selectedShadow;
+    transition: transform 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.selected{
+    transform: $selectedScale;
+    box-shadow: $selectedShadow;
+}

@@ -1,0 +1,11 @@
+<div class="threads-page-layout">
+    <div class="thread-selector-box">
+        <div *ngFor="let thread of threads$ | async">
+            <app-thread-selector [isSelected]="(getSelectedThread() | async)?.id === thread.id"
+                (threadSelected)="onThreadSelected($event)" [thread]="thread"></app-thread-selector>
+        </div>
+    </div>
+    <div>
+        <app-thread-viewer [thread]="getSelectedThread() | async"></app-thread-viewer>
+    </div>
+</div>
