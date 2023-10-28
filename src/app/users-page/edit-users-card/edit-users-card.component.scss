@@ -1,0 +1,5 @@
+@import '../../mixins/core.scss';
+
+form{
+    @include flex-row;
+}

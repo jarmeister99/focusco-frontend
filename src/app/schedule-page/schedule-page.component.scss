@@ -1,0 +1,25 @@
+@import '../mixins/core.scss';
+
+.schedule-page-layout {
+    @include padding;
+    width: 30em;
+    @include flex-row;
+}
+.sender-container{
+    @include flex-column;
+    align-items: flex-start;
+    min-width: 30em;
+}
+.scheduled-list-container{
+    min-width: 30em;
+}
+mat-card{
+    padding: 1em;
+    width: 100%;
+}
+::ng-deep{
+    .multiselect-dropdown{
+        width: 25em !important;
+        margin-bottom: 1em;
+    }
+}

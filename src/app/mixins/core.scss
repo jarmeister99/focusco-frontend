@@ -1,0 +1,15 @@
+@mixin padding {
+    padding: 1em;
+}
+
+@mixin flex-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+}

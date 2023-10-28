@@ -1,0 +1,5 @@
+@import '../../mixins/core.scss';
+
+.create-users-component-layout{
+    @include padding;
+}

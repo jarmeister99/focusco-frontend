@@ -1,0 +1,25 @@
+<div class="schedule-page-layout">
+    <div class="sender-container">
+        <mat-card>
+            <mat-card-title>
+                <h1>Schedule Messages</h1>
+            </mat-card-title>
+            <app-multi-contact-selector></app-multi-contact-selector>
+            <app-time-picker [formControl]="dateFormControl"></app-time-picker>
+            <div>
+                <app-message-creator (onClick)="onSubmit($event)"></app-message-creator>
+            </div>
+        </mat-card>
+    </div>
+    <div class="scheduled-list-container">
+        <mat-card>
+            <mat-card-title>
+                <h1>Scheduled Messages</h1>
+            </mat-card-title>
+            <div *ngFor="let scheduledMessage of scheduledMessages | async; index as i">
+                <app-scheduled-message [scheduledMessage]="scheduledMessage"></app-scheduled-message>
+            </div>
+        </mat-card>
+    </div>
+
+</div>

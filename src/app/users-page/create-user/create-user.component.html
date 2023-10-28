@@ -1,0 +1,13 @@
+<div class="div-create-users-component-layout">
+    <form [formGroup]="createUserForm">
+        <mat-form-field>
+            <mat-label>Contact Name</mat-label>
+            <input matInput [placeholder]="'Name'" formControlName="name">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Number</mat-label>
+            <input matInput [placeholder]="'Number'" formControlName="number">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="createUser()">Create User</button>
+    </form>
+</div>
