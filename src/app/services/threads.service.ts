@@ -13,7 +13,7 @@ export class ThreadsService {
 
 
   getThreadsOnInterval$() {
-    return interval(5000) // emits a value every 5 seconds
+    return interval(500) // emits a value every 5 seconds
       .pipe(
         startWith(0), // starts immediately
         switchMap(() => this.getThreads()), // switches to new inner observable when source emits, canceling any previous in-flight requests

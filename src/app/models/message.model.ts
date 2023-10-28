@@ -4,10 +4,12 @@ import User from "./user.model";
 export default interface Message {
     id: number;
     body: string;
-    isVcf: boolean;
     mediaUrl: string;
     sender: User;
+    senderId: number;
     receiver: User;
+    receiverId: number;
     createdAt: Date;
     thread: Thread;
+    isOwner?: boolean;
 }

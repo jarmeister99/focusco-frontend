@@ -9,8 +9,10 @@ export function getContactName(thread: Thread) {
 }
 
 export function getLatestMessage(thread: Thread) {
-    // return the latest message's text
-    // if no messages, return "No Messages"
-    let latestMessage = thread.messages[thread.messages.length - 1];
+
+    let latestMessage = thread.messages.reduce((prev, current) => {
+        return (prev.createdAt > current.createdAt) ? prev : current
+    });
+
     return latestMessage?.body || "No Messages";
 }

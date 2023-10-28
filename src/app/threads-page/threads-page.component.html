@@ -5,7 +5,14 @@
                 (threadSelected)="onThreadSelected($event)" [thread]="thread"></app-thread-selector>
         </div>
     </div>
-    <div>
+    <div class="thread-viewer-box">
         <app-thread-viewer [thread]="getSelectedThread() | async"></app-thread-viewer>
+    </div>
+    <div class="multiselector-viewer-box">
+        <h1>Bulk Send</h1>
+        <app-multi-contact-selector></app-multi-contact-selector>
+        <app-message-creator (onClick)="onClick($event)"></app-message-creator>
+        <h1>Export All</h1>
+        <button mat-raised-button color="primary" (click)="exportAll()">Export All</button>
     </div>
 </div>
