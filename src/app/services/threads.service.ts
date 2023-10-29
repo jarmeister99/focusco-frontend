@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, distinctUntilChanged, interval, map, startWith, switchMap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import Thread from '../models/thread.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThreadsService {
-  API_URL = 'http://localhost:3000/threads';
+  API_URL = environment.API_BASE_URL + '/threads';
 
   constructor(private http: HttpClient) { }
 

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, distinctUntilChanged, interval, map, startWith, switchMap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import User from '../models/user.model';
 
 interface CreateUserPayload {
@@ -12,7 +13,7 @@ interface CreateUserPayload {
     providedIn: 'root'
 })
 export class UsersService {
-    API_URL = 'http://localhost:3000/users';
+    API_URL = environment.API_BASE_URL + '/users';
 
     constructor(private http: HttpClient) { }
 

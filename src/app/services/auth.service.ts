@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    authUrl = 'http://localhost:3000/auth/check';
+    authUrl = environment.API_BASE_URL + '/auth/check';
     authenticated = true;
     constructor(private http: HttpClient, private router: Router) {
 

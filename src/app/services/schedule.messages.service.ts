@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, distinctUntilChanged, interval, map, startWith, switchMap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import Message from '../models/message.model';
 import ScheduledMessage from '../models/scheduled-message.model';
 
@@ -8,7 +9,8 @@ import ScheduledMessage from '../models/scheduled-message.model';
     providedIn: 'root'
 })
 export class ScheduleMessagesService {
-    API_URL = 'http://localhost:3000/messages/schedule';
+    API_URL = environment.API_BASE_URL + '/messages/schedule';
+
 
     constructor(private http: HttpClient) { }
 
