@@ -8,7 +8,7 @@ import ScheduledMessage from '../models/scheduled-message.model';
     providedIn: 'root'
 })
 export class ScheduleMessagesService {
-    API_URL = 'http://lofilovers.com:3000/api/messages/schedule';
+    API_URL = 'http://localhost:3000/messages/schedule';
 
     constructor(private http: HttpClient) { }
 

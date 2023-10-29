@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
     providedIn: 'root'
 })
 export class AuthService {
-    authUrl = 'http://lofilovers.com:3000/api/auth/check';
+    authUrl = 'http://localhost:3000/auth/check';
     authenticated = true;
     constructor(private http: HttpClient, private router: Router) {
 

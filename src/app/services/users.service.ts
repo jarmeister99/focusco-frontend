@@ -12,7 +12,7 @@ interface CreateUserPayload {
     providedIn: 'root'
 })
 export class UsersService {
-    API_URL = 'http://lofilovers.com:3000/api/users';
+    API_URL = 'http://localhost:3000/users';
 
     constructor(private http: HttpClient) { }
 
