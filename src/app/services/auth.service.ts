@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
     authUrl = environment.API_BASE_URL + '/auth/check';
-    authenticated = true;
+    authenticated = false;
     constructor(private http: HttpClient, private router: Router) {
 
     }

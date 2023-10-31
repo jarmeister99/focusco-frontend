@@ -7,7 +7,8 @@
             <mat-icon style="cursor: pointer;" (click)="onLinkClick()" matSuffix>link</mat-icon>
         </div>
         <mat-form-field appearance="outline">
-            <input (keyup.enter)="form.onSubmit($event)" matInput formControlName="body" placeholder="Message">
+            <textarea style="overflow-y: hidden" matInput formControlName="body" [placeholder]="'Message'">
+            </textarea>
             <mat-icon [ngClass]="isFormValid() ? 'submit-visible' : 'submit-hidden'" (click)="form.onSubmit($event)"
                 matSuffix>arrow_upward</mat-icon>
         </mat-form-field>
@@ -15,6 +16,7 @@
             <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>Link</mat-label>
                 <input (keyup.enter)="form.onSubmit($event)" matInput formControlName="mediaUrl" [placeholder]="'Link'">
+
             </mat-form-field>
         </div>
     </form>
