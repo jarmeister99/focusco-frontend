@@ -1,0 +1,5 @@
+<div>
+    <div *ngFor="let message of messages | orderBy; index as i">
+        <app-message [message]="message" [senderIsViewing]="!message?.receiver?.isOwner "></app-message>
+    </div>
+</div>

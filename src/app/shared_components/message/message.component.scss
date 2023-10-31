@@ -1,0 +1,17 @@
+.left {
+    // align paragraph to the left
+    margin-left: 0;
+    display: block;
+    text-align: left;
+}
+.right {
+    // align paragraph to the right
+    margin-left: auto; 
+    margin-right: 2em;
+    display: block;
+    text-align: right;;
+}
+
+.text-width {
+    width: 50%;
+}

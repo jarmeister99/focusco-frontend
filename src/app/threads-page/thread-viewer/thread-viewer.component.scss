@@ -1,0 +1,23 @@
+mat-card {
+    max-width: 30vw;
+    max-height: 75vh;
+    overflow-y: auto;
+    
+}
+mat-divider {
+    margin: 0.5em 0 0.5em 0;;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color:white;  // TODO: scss constant
+}
+
+.sticky-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    background-color:white;  // TODO: scss constant
+}

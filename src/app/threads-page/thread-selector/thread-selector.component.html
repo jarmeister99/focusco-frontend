@@ -1,5 +1,8 @@
-<div>
-    <div *ngFor="let thread of threads">
-        <app-thread-selector-entry [thread]="thread"></app-thread-selector-entry>
-    </div>
-</div>
+<mat-card (click)="selectThread()" [ngClass]="isSelected ? 'selected' : ''">
+    <mat-card-header>
+        <mat-card-title>{{getContactName(thread)}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p>{{getLatestMessage(thread)}}</p>
+    </mat-card-content>
+</mat-card>

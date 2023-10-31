@@ -1,9 +1,0 @@
-<div *ngIf="contactForm">
-    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-        <input placeholder="Name" style="margin-bottom: 0.5em" type="text" id="name" formControlName="name">
-        <br>
-        <input placeholder="Number" style="margin-bottom: 0.5em" type="text" id="number" formControlName="number">
-        <br>
-        <button type="submit">Submit</button>
-    </form>
-</div>

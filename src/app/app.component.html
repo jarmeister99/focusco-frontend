@@ -1,8 +1,13 @@
-<div style="margin: 0.5em">
-    <p><a routerLink="/threads">Threads</a></p>
-    <p><a routerLink="/bulk-send">Bulk Send</a></p>
-    <p><a routerLink="/autoreply">Autoreply</a></p>
-    <p><a routerLink="/contacts">Contacts</a></p>
-</div>
-
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+        <mat-nav-list>
+            <a mat-list-item routerLink="/login">Login</a>
+            <a mat-list-item routerLink="/threads">View Threads</a>
+            <a mat-list-item routerLink="/users">View Contacts</a>
+            <a mat-list-item routerLink="/schedule">Schedule Messages</a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

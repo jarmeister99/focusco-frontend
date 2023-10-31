@@ -1,0 +1,13 @@
+<mat-form-field>
+    <input matInput [ngxMatDatetimePicker]="pickerCustomIcon" placeholder="Choose a date" [formControl]="control"
+        [min]="minDate">
+    <ngx-mat-datepicker-toggle matSuffix [for]="pickerCustomIcon"></ngx-mat-datepicker-toggle>
+    <ngx-mat-datetime-picker #pickerCustomIcon [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+        [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+        [enableMeridian]="enableMeridian" [disableMinute]="disableMinute" [hideTime]="hideTime">
+        <ngx-mat-datepicker-actions>
+            <button mat-button ngxMatDatepickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" ngxMatDatepickerApply>Apply</button>
+        </ngx-mat-datepicker-actions>
+    </ngx-mat-datetime-picker>
+</mat-form-field>

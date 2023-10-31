@@ -1,0 +1,23 @@
+<mat-card>
+    <div *ngIf="thread; else empty">
+        <div class="sticky-header">
+            <mat-card-header>
+                <mat-card-title>{{getContactName(thread)}}</mat-card-title>
+            </mat-card-header>
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <app-message-list [messages]="thread.messages"></app-message-list>
+        </mat-card-content>
+        <div class="sticky-footer">
+            <mat-card-footer>
+                <app-message-creator (onClick)="onClick($event)"></app-message-creator>
+            </mat-card-footer>
+        </div>
+    </div>
+    <ng-template #empty>
+        <mat-card-header>
+            <mat-card-title>No thread selected</mat-card-title>
+        </mat-card-header>
+    </ng-template>
+</mat-card>

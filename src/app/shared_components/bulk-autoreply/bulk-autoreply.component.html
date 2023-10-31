@@ -1,0 +1,9 @@
+<div class="bulk-autoreply-layout">
+    <form [formGroup]="autoreplyForm">
+        <mat-form-field>
+            <mat-label>Bulk Autoreply</mat-label>
+            <input matInput formControlName="autoreply">
+        </mat-form-field>
+        <button *ngIf="inputValid()" mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+    </form>
+</div>

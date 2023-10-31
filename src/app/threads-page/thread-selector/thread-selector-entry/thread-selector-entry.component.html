@@ -1,9 +1,0 @@
-<div style="border: 1px solid black; margin: 1em; padding: 0.5em; width: 10em;" *ngIf="thread"
-    (click)="onThreadSelected()">
-    <p>{{thread.contact.name}}</p>
-    <p>({{thread.contact.number}})</p>
-    <button (click)="onDelete()">Delete</button>
-    <div *ngIf="hasUnreadMessages()"
-        style="background-color: red; width: 1em; height: 1em; border-radius: 50%; position: relative; left: 90%;">
-    </div>
-</div>
