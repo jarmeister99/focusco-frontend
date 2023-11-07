@@ -3,7 +3,21 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+
+    form {
+        width: 90%;
+
+        mat-form-field {
+            margin-bottom: 0.5em;
+        }
+        button {
+            margin-bottom: 0.5em;
+            width: 100%;
+        }
+    }
 }
+
 
 .button-bar{
     // flex row, items float right
@@ -11,24 +25,8 @@
     justify-content: flex-end;
     align-items: center;
     flex-direction: row;
-    width: 100%; 
 }
 
-mat-form-field{
-    height: 50%;
-}
-
-mat-icon:hover{
-    transform: scale(1.1);
-    transition: transform 0.05s ease-in-out;
-} 
-
-.submit-hidden {
-    opacity: 0;
-    transition: opacity 0.1s ease-in-out;
-}
-.submit-visible {
-    cursor: pointer;
-    opacity: 1;
-    transition: opacity 0.1s ease-in-out;
+.textarea-container {
+    width: 100%;
 }
