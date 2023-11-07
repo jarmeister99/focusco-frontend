@@ -6,8 +6,10 @@
             <mat-icon style="cursor: pointer;" (click)="onLinkClick()" matSuffix>link</mat-icon>
         </div>
         <mat-form-field subscriptSizing="dynamic" appearance="outline" class="textarea-container">
-            <textarea style="overflow-y: hidden" matInput formControlName="body" [placeholder]="'Message'">
+            <textarea style="overflow-y: hidden" matInput formControlName="body" [placeholder]="'Message'"
+                maxlength="200">
             </textarea>
+            <mat-hint align="end">{{formGroup.value?.body.length || 0}}/200</mat-hint>
         </mat-form-field>
         <div *ngIf="linkInputVisible">
             <mat-form-field subscriptSizing="dynamic" appearance="outline" style="width: 100%;">
