@@ -37,6 +37,21 @@ export class BulkAutoreplyComponent {
 
   }
   inputValid() {
-    return this.autoreplyForm.value.autoreply != '';
+    return !!this.autoreplyForm.value.autoreply;
+  }
+  onClearAllClick() {
+    if (!this.users) {
+      return;
+    }
+    // create an new user with the new autoreply value for each input user
+    const updatedUsers = this.users.map(user => {
+      return {
+        id: user.id,
+        autoreply: ''
+      }
+    });
+    this.usersService.updateUsers(updatedUsers).subscribe(() => {
+      this.autoreplyForm.reset();
+    });
   }
 }

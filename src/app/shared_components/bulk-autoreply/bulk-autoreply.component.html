@@ -5,5 +5,6 @@
             <input matInput formControlName="autoreply">
         </mat-form-field>
         <button *ngIf="inputValid()" mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+        <button mat-raised-button color="warn" (click)="onClearAllClick()">Clear All</button>
     </form>
 </div>
