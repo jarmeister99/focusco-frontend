@@ -1,3 +1,5 @@
+@import '../mixins/core.scss';
+
 .thread-selector-box{
     display: flex;
     flex-direction: column;
@@ -9,13 +11,21 @@
         margin-bottom: 1em;
     }
 }
-.thread-viewer-box{
-    min-width: 40em;
-}
 .threads-page-layout {
-    padding: 1em;
-    // row flex where first div takes up 1/4 of space and second div takes up 3/4 of space
+    @include padding;
     display: flex;
     flex-direction: row;
     gap: 1em;
+}
+
+.thread-viewer-box {
+    flex-grow: 1;
+    max-width: 40vw;
+}
+.multiselector-viewer-box {
+    ::ng-deep {
+        .dropdown-btn{
+            width: 90% !important;
+        }
+    }
 }

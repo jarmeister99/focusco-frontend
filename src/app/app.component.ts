@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MessagesService } from './services/messages.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'frontend';
+
+  constructor(private messagesService: MessagesService) { }
+
+  onExportClick() {
+    this.messagesService.exportMessages().subscribe((data) => {
+      const blob = new Blob([data], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
+    });
+  }
+
 }

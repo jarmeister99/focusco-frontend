@@ -1,14 +1,14 @@
 <div *ngIf="editUserForm">
     <form [formGroup]="editUserForm" #form>
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Phone Number</mat-label>
             <input matInput [placeholder]="user.number" formControlName="number">
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Contact Name</mat-label>
             <input matInput [placeholder]="user.name" formControlName="name">
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Autoreply</mat-label>
             <input matInput [placeholder]="user.autoreply ? user.autoreply : ''" formControlName="autoreply">
         </mat-form-field>

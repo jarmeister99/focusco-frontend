@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 
@@ -9,12 +9,23 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginPageComponent {
   loginForm: FormGroup;
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  authErrorMessage = 'Login failed';
+  authError = false;
+
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private cdr: ChangeDetectorRef) {
     this.loginForm = this.formBuilder.group({
       password: ''
     });
   }
   login() {
-    this.authService.login(this.loginForm.value.password);
+    this.authService.login(this.loginForm.value.password).subscribe({
+      next: (res: any) => {
+        this.authError = false;
+      },
+      error: (err: Error) => {
+        this.authError = true;
+        this.authErrorMessage = err.message;
+      }
+    })
   }
 }

@@ -7,11 +7,12 @@
 .right {
     // align paragraph to the right
     margin-left: auto; 
-    margin-right: 2em;
+    margin-right: 0;
     display: block;
     text-align: right;;
 }
 
 .text-width {
     width: 50%;
+    word-wrap: break-word;
 }
