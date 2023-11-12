@@ -1,0 +1,34 @@
+
+.add-user-form-controls{
+    margin-left: 1em;
+    margin-right: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    button {
+        width: 75%;
+    }
+}
+.user-grid-container{
+    .mat-column-name{
+        max-width: 20em;
+        width: 20em;
+    }
+    .mat-column-number{
+        max-width: 10em;
+        width: 10em;
+    }
+}
+.button-bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1em;
+    margin-bottom: 0.5em;
+}
+table{
+    max-height: 50vh;
+    overflow-y: auto;
+    display: block;
+}

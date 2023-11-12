@@ -1,0 +1,15 @@
+@import '../../../mixins/core.scss';
+
+.root{
+    margin-right: 1em;
+}
+
+form{
+    @include flex-row;
+    align-items: center;
+}
+
+mat-form-field {
+    margin-bottom: 0.5em;
+    width: 10em;
+}

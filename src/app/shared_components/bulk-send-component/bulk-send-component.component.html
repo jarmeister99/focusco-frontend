@@ -1,0 +1,33 @@
+<div class="sender-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                <h1>Send Messages</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <app-multiselect-users (selectedUsersChange)="onSelectedUsersChange($event)" [showAddButton]="false"
+                [users$]="users$" *ngIf="!isCohortSelected()"></app-multiselect-users>
+            <form [formGroup]="cohortForm" *ngIf="cohortFormReady && !areContactsSelected()">
+                <mat-form-field appearance="outline">
+                    <mat-label>Cohort</mat-label>
+                    <mat-select formControlName="cohort">
+                        <mat-option [value]="null">None</mat-option>
+                        <mat-option *ngFor="let cohort of cohorts$ | async"
+                            [value]="cohort">{{cohort.name}}</mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+                <mat-chip [matTooltip]="getUsersInSelectedCohortTextString()"
+                    *ngIf="getUsersInSelectedCohort().length > 0">
+                    {{getUsersInSelectedCohort().length}} users selected
+                </mat-chip>
+            </form>
+            <app-time-picker [formControl]="dateFormControl"></app-time-picker>
+            <div>
+                <app-message-creator [buttonDisabled]="shouldDisableMessageCreatorButton()"
+                    (onClick)="onSubmit($event)"></app-message-creator>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

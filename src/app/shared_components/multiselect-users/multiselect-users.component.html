@@ -1,0 +1,13 @@
+<div class="root" *ngIf="users$">
+    <div class="user-select">
+        <ng-multiselect-dropdown [placeholder]="'Select some contacts'" [settings]="dropdownSettings"
+            [data]="dropdownList" [(ngModel)]="selectedItems" (ngModelChange)="onModelChange($event)">
+        </ng-multiselect-dropdown>
+    </div>
+    <div class="controls">
+        <button *ngIf="selectedItems.length > 0 && showAddButton" mat-raised-button color="primary"
+            (click)="onClickAddUsers()">Add {{
+            selectedItems.length }}
+            Users</button>
+    </div>
+</div>

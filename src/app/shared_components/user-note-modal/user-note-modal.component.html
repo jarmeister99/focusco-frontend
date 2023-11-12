@@ -1,0 +1,17 @@
+<div class="form-container" *ngIf="noteForm">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Edit Notes</mat-card-title>
+            <mat-card-subtitle>{{data.user.name}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="noteForm">
+                <mat-form-field subscriptSizing="dynamic" appearance="outline">
+                    <mat-label>Note</mat-label>
+                    <textarea [rows]="10" matInput formControlName="note"></textarea>
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="submitNote()">Submit Note</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

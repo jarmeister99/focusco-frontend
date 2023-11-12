@@ -1,0 +1,17 @@
+@import "../../mixins/core.scss";
+.create-users-component-layout{
+    display: inline-block;
+    width: 30vw;
+}
+
+form {
+    @include flex-column;
+}
+
+mat-form-field {
+    margin-right: 0.5em;
+    width: 100%;
+}
+mat-card-header{
+    margin-bottom: 0.5em;
+}

@@ -1,0 +1,39 @@
+<div class="create-users-component-layout">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Create User</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="createUserForm">
+                <mat-form-field appearance="outline">
+                    <mat-label>Contact Name</mat-label>
+                    <input matInput [placeholder]="'Name'" formControlName="name">
+                    <mat-error *ngIf="createUserForm.controls['name'].hasError('required')">
+                        Name is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Number</mat-label>
+                    <input matInput [placeholder]="'Number'" formControlName="number">
+                    <mat-error *ngIf="createUserForm.controls['number'].hasError('invalidNumber')">
+                        Number must be in the format +15551234567
+                    </mat-error>
+                    <mat-error *ngIf="createUserForm.controls['number'].hasError('required')">
+                        Number is required
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" *ngIf="cohortFormReady">
+                    <mat-label>Cohort</mat-label>
+                    <mat-select formControlName="cohort">
+                        <mat-option [value]="null">None</mat-option>
+                        <mat-option *ngFor="let cohort of cohorts$ | async"
+                            [value]="cohort">{{cohort.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button [disabled]="this.createUserForm.invalid" mat-raised-button color="primary"
+                    (click)="createUser()">Create
+                    User</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

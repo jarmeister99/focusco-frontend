@@ -1,0 +1,25 @@
+<div class="cohort-list-container" [ngClass]="layout === 'row' ? 'flex-row' : 'flex-col'">
+    <mat-card (click)="onCardClick(cohort)" [ngStyle]="controlStyle === 'card' ? {'cursor': 'pointer'} : {}"
+        [ngClass]="(isSelected(cohort) | async) ? 'selected' : ''" class="cohort-card"
+        *ngFor="let cohort of cohorts$ | async">
+        <mat-card-header>
+            <mat-card-title style="user-select: none;" [matTooltip]="cohort.name">{{cohort.name}}</mat-card-title>
+            <mat-card-subtitle [matTooltip]="cohort.description">{{cohort.description}}</mat-card-subtitle>
+            <mat-card-actions *ngIf="controlStyle === 'buttons'" align="end">
+                <button (click)="onDeleteClick(cohort)" mat-icon-button aria-label="Delete button">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button disabled mat-icon-button aria-label="Edit button">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button aria-label="Export button" (click)="onExportClick(cohort)">
+                    <mat-icon>download</mat-icon>
+                </button>
+                <button mat-button (click)="onCohortClick(cohort)">
+                    View Users
+                </button>
+
+            </mat-card-actions>
+        </mat-card-header>
+    </mat-card>
+</div>

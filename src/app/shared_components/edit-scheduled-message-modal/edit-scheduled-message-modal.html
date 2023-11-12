@@ -1,0 +1,11 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Edit Scheduled Action</mat-card-title>
+        <mat-card-subtitle>Sending to {{this.data.receiverName}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <app-time-picker [formControl]="dateFormControl"></app-time-picker>
+        <app-message-creator (onClick)="onClick($event)" [defaultBody]="this.data.body"
+            [defaultMediaUrl]="this.data.mediaUrl"></app-message-creator>
+    </mat-card-content>
+</mat-card>

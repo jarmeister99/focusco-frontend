@@ -1,0 +1,23 @@
+<div *ngIf="editUserForm" class="root">
+    <form [formGroup]="editUserForm" #form>
+        <mat-form-field subscriptSizing="dynamic" appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput [placeholder]="user.number" formControlName="number">
+        </mat-form-field>
+        <mat-form-field subscriptSizing="dynamic" appearance="outline">
+            <mat-label>Contact Name</mat-label>
+            <input matInput [placeholder]="user.name" formControlName="name">
+        </mat-form-field>
+        <mat-form-field subscriptSizing="dynamic" appearance="outline">
+            <mat-label>Autoreply</mat-label>
+            <input matInput [placeholder]="user.autoreply ? user.autoreply : ''" formControlName="autoreply">
+        </mat-form-field>
+        <button mat-icon-button (click)="onEdit()">
+            <mat-icon>edit_note</mat-icon>
+        </button>
+        <button *ngIf="formAvailableToSend()" mat-raised-button color="primary" (click)="onSubmit()">Submit
+            Changes</button>
+        <button *ngIf="!this.user.isOwner" mat-raised-button color='warn' (click)="onDelete()">Delete</button>
+
+    </form>
+</div>

@@ -1,0 +1,23 @@
+<div class="users-page-layout">
+    <button mat-raised-button color="primary" (click)="openCreateUserModal()">Create User</button>
+    <div class="cohort-selector-and-list-container">
+        <div class="cohort-selector-container">
+            <app-cohorts-list [layout]="'column'" [controlStyle]="'card'" [cohorts$]="cohorts$"
+                [selectedCohort$]="selectedCohort$" (selectCohort)="onSelectCohort($event)">
+            </app-cohorts-list>
+        </div>
+        <div class="user-list-container" *ngIf="selectedCohort$ | async">
+            <app-edit-users-card *ngFor="let user of sortUsers(selectedCohortUsers$ | async)"
+                [user]="user"></app-edit-users-card>
+        </div>
+        <div class="user-list-container" *ngIf="!(selectedCohort$ | async)">
+            <app-edit-users-card *ngFor="let user of sortUsers(users$ | async)" [user]="user"></app-edit-users-card>
+        </div>
+        <div class="user-controls-container" *ngIf="selectedCohort$ | async">
+            <app-bulk-autoreply [users]="selectedCohortUsers$ | async"></app-bulk-autoreply>
+        </div>
+        <div class="user-controls-container" *ngIf="!(selectedCohort$ | async)">
+            <app-bulk-autoreply [users]="users$ | async"></app-bulk-autoreply>
+        </div>
+    </div>
+</div>

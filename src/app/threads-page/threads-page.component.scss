@@ -8,11 +8,12 @@
     overflow-y: scroll;
     overflow-x: hidden;
     padding-right: 1em;
-    width: 15em;
+    min-width: 15em;
+    max-width: 15em;
 
     user-select: none;
-    // margin bottom 1em to every element except last
-    & > *:not(:last-child){
+    // margin bottom 1em to every element
+    & > *{
         margin-bottom: 1em;
     }
 }

@@ -1,0 +1,18 @@
+@import '../../mixins/core.scss';
+
+.cohorts-page-layout{
+    @include padding;
+    @include flex-row;
+}
+
+.cohort-list-layout {
+    @include flex-column;
+    button {
+        width: 100%;
+    }
+}
+
+.cohort-list-container {
+    max-height: 80vh;
+    overflow-y: auto;
+}
