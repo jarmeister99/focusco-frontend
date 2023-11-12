@@ -3,11 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, distinctUntilChanged, interval, map, startWith, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import User from '../models/user.model';
-
-interface CreateUserPayload {
-    name: string;
-    number: string;
-}
+import { CreateUserPayload, EditUserPayload } from '../state/users.actions';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +12,10 @@ export class UsersService {
     API_URL = environment.API_BASE_URL + '/users';
 
     constructor(private http: HttpClient) { }
+
+    getAllUsers() {
+        return this.http.get(this.API_URL) as Observable<User[]>;
+    }
 
     getUsersOnInterval$() {
         return interval(500) // emits a value every 5 seconds
@@ -36,15 +36,19 @@ export class UsersService {
         return this.http.get(this.API_URL) as Observable<User[]>;
     }
 
-    updateUser(id: number, user: Partial<User>) {
+    updateUser(id: number, user: EditUserPayload) {
         return this.http.put(`${this.API_URL}/${id}`, user) as Observable<User>;
     }
 
-    updateUsers(users: Partial<User>[]) {
+    updateUsers(users: EditUserPayload[]) {
         return this.http.put(this.API_URL, users) as Observable<User[]>;
     }
 
     createUser(createUserPayload: CreateUserPayload) {
         return this.http.post(this.API_URL, createUserPayload) as Observable<User>;
+    }
+
+    deleteUser(id: number) {
+        return this.http.delete(`${this.API_URL}/${id}`) as Observable<User>;
     }
 }

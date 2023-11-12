@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
-import { BehaviorSubject, take } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { Observable, combineLatest, map } from 'rxjs';
+import { Cohort } from '../models/cohort.model';
 import Thread from '../models/thread.model';
-import { MessagesService } from '../services/messages.service';
+import User from '../models/user.model';
 import { SimpleStateService } from '../services/simple-state.service';
-import { ThreadSelectorService } from '../services/thread-selector.service';
-import { ThreadsService } from '../services/threads.service';
-import { UsersService } from '../services/users.service';
+import { WebsocketService } from '../services/websocket.service';
+import { BulkSendComponentPayload } from '../shared_components/bulk-send-component/bulk-send-component.component';
+import { CohortsState, SelectCohortAction } from '../state/cohorts.state';
+import { CreateScheduledMessageAction } from '../state/scheduledMessages.state';
+import { GetAllThreadsAction, SelectThreadAction, ThreadsState } from '../state/threads.state';
 
 @Component({
   selector: 'app-threads-page',
@@ -14,52 +18,60 @@ import { UsersService } from '../services/users.service';
   providers: [SimpleStateService]
 
 })
-export class ThreadsPageComponent {
-  threads$: BehaviorSubject<Thread[]> = new BehaviorSubject<Thread[]>([]);
-  constructor(private usersService: UsersService, private messagesService: MessagesService, private threadsService: ThreadsService, private threadSelectorService: ThreadSelectorService, private simpleState: SimpleStateService) {
-    this.threadsService.getThreadsOnInterval$().subscribe((threads: Thread[]) => {
-      this.threads$.next(threads);
-      // also refresh the selected thread
-      this.threadSelectorService.getSelectedThread().pipe(take(1)).subscribe((thread: Thread | null) => {
-        if (thread) {
-          const refreshedThread = threads.find((t: Thread) => t.id === thread.id);
-          if (refreshedThread) {
-            this.threadSelectorService.selectThread(refreshedThread);
-          }
-        }
-      });
+export class ThreadsPageComponent implements OnInit {
+  @Select(CohortsState.cohorts) cohorts$!: Observable<any>;
+  @Select(CohortsState.selectedCohort) selectedCohort$!: Observable<Cohort>;
+  @Select(CohortsState.selectedUsers) selectedUsers$!: Observable<User[]>;
+  @Select(ThreadsState.threads) threads$!: Observable<Thread[]>;
+  @Select(ThreadsState.selectedThread) selectedThread$!: Observable<Thread | undefined>;
 
+  threadsInSelectedCohort$!: Observable<Thread[]>;
+
+  constructor(private websocketService: WebsocketService, private store: Store) {
+    this.threadsInSelectedCohort$ = combineLatest([this.selectedUsers$, this.threads$]).pipe(
+      map(([selectedUsers, threads]) =>
+        threads.filter(thread =>
+          thread.participants.some(participant =>
+            selectedUsers.some(user => user.id === participant.id)
+          )
+        )
+      )
+    );
+  }
+  ngOnInit(): void {
+    this.store.dispatch(new GetAllThreadsAction()).subscribe();
+    this.websocketService.onMessage().subscribe(() => {
+      this.store.dispatch(new GetAllThreadsAction()).subscribe();
     });
   }
   onThreadSelected(thread: Thread) {
-    this.threadSelectorService.selectThread(thread);
+    this.store.dispatch(new SelectThreadAction(thread)).subscribe();
   }
 
-  getSelectedThread() {
-    return this.threadSelectorService.getSelectedThread();
+  onBulkSend(payload: BulkSendComponentPayload) {
+    const createScheduledMessagePayload = {
+      receiverIds: payload.receivers.map((user) => user.id),
+      triggerAt: payload.triggerAt,
+      messagePayload: payload.messagePayload
+    }
+    this.store.dispatch(new CreateScheduledMessageAction(createScheduledMessagePayload))
   }
 
-  onClick($event: any) {
-    // bulk send
-    const selectedContacts = this.simpleState.get().selectedItems;
-
-    this.usersService.getOwner().pipe(take(1)).subscribe((owner) => {
-      for (const contact of selectedContacts) {
-        const messagePayload = { ...$event };
-        messagePayload.receiverId = contact.id;
-        messagePayload.senderId = owner.id;
-        this.messagesService.sendMessage(messagePayload).subscribe(() => {
-        });
-      }
-    });
+  onSelectCohort(cohort: Cohort) {
+    this.store.dispatch(new SelectCohortAction(cohort)).subscribe();
   }
 
-  exportAll() {
-    this.messagesService.exportMessages().subscribe((data) => {
-      const blob = new Blob([data], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url);
-    });
+  threadsListSource$() {
+    if (this.store.selectSnapshot(CohortsState.selectedCohort)) {
+      return this.threadsInSelectedCohort$;
+    } else {
+      return this.threads$;
+    }
   }
 
+  hasThreads$() {
+    return this.threadsListSource$().pipe(
+      map((threads) => threads.length > 0)
+    )
+  }
 }

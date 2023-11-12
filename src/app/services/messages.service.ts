@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, distinctUntilChanged, interval, map, startWith, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import Message from '../models/message.model';
+import { EditScheduledMessageActionPayload } from '../state/scheduledMessages.state';
+import { SendMessageActionPayload } from '../state/threads.state';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +13,10 @@ export class MessagesService {
     API_URL = environment.API_BASE_URL + '/messages';
 
     constructor(private http: HttpClient) { }
+
+    editScheduledMessage(messageId: number, messagePayload: EditScheduledMessageActionPayload) {
+        return this.http.put(`${this.API_URL}/${messageId}`, { ...messagePayload });
+    }
 
     exportMessages() {
         return this.http.get(`${this.API_URL}/export`, { responseType: 'blob' });
@@ -31,7 +37,11 @@ export class MessagesService {
         return this.http.get(this.API_URL) as Observable<Message[]>;
     }
 
-    sendMessage(messagePayload: Partial<Message>) {
+    sendMessage(messagePayload: SendMessageActionPayload) {
         return this.http.post(this.API_URL, { ...messagePayload });
+    }
+
+    deleteMessage(messageId: number) {
+        return this.http.delete(`${this.API_URL}/${messageId}`);
     }
 }

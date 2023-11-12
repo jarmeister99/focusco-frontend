@@ -2,8 +2,8 @@
     <p>{{ message.createdAt | date : 'short' }}</p>
     <ng-container *ngIf="message.mediaUrl">
         <ng-container *ngIf="!isVCF(); else vcf">
-            <p>URL: {{ message.mediaUrl }} </p>
-            <img style="width: 75%; height: auto;" src="{{message.mediaUrl}}" />
+            <p [matTooltip]="message.mediaUrl">URL: {{ message.mediaUrl | slice:0:30 }} </p>
+            <img style="width: 5em; height: auto;" src="{{message.mediaUrl}}" />
         </ng-container>
         <ng-template #vcf>
             <p>[[VCF]]</p>

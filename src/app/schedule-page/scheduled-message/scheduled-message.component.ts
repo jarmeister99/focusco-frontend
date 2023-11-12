@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import ScheduledMessage from 'src/app/models/scheduled-message.model';
+import Message from 'src/app/models/message.model';
 
 @Component({
   selector: 'app-scheduled-message',
@@ -7,5 +7,5 @@ import ScheduledMessage from 'src/app/models/scheduled-message.model';
   styleUrls: ['./scheduled-message.component.scss']
 })
 export class ScheduledMessageComponent {
-  @Input() scheduledMessage!: ScheduledMessage;
+  @Input() scheduledMessage!: Message;
 }

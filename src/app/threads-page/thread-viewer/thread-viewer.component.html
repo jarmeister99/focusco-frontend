@@ -1,23 +1,25 @@
 <mat-card>
-    <div *ngIf="thread; else empty">
-        <div class="sticky-header">
-            <mat-card-header>
-                <mat-card-title>{{getContactName(thread)}}</mat-card-title>
-            </mat-card-header>
-            <mat-divider></mat-divider>
-        </div>
-        <mat-card-content>
-            <app-message-list [messages]="thread.messages"></app-message-list>
-        </mat-card-content>
-        <div class="sticky-footer">
-            <mat-card-footer>
-                <app-message-creator (onClick)="onClick($event)"></app-message-creator>
-            </mat-card-footer>
-        </div>
-    </div>
-    <ng-template #empty>
+    <div class="sticky-header">
         <mat-card-header>
-            <mat-card-title>No thread selected</mat-card-title>
+            <mat-card-title>{{getContactName(selectedThread)}}</mat-card-title>
+            <mat-card-subtitle>{{getContactNumber(selectedThread)}}</mat-card-subtitle>
+            <div>
+                <app-autoreply-badge [user]="selectedUser()"></app-autoreply-badge>
+                <button style="top: 0.25em; margin-left: 0.5em" mat-icon-button aria-label="Edit note button"
+                    (click)="onEdit()">
+                    <mat-icon>edit_note</mat-icon>
+                </button>
+            </div>
         </mat-card-header>
-    </ng-template>
+
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <app-message-list [messages]="selectedThread.messages"></app-message-list>
+    </mat-card-content>
+    <div class="sticky-footer">
+        <mat-card-footer>
+            <app-message-creator (onClick)="onClick($event)"></app-message-creator>
+        </mat-card-footer>
+    </div>
 </mat-card>

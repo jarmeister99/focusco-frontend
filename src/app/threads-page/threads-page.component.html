@@ -1,18 +1,18 @@
 <div class="threads-page-layout">
-    <div class="thread-selector-box">
-        <div *ngFor="let thread of threads$ | async">
-            <app-thread-selector [isSelected]="(getSelectedThread() | async)?.id === thread.id"
+    <div class="cohort-selector-box">
+        <app-cohorts-list [layout]="'column'" (selectCohort)="onSelectCohort($event)" [controlStyle]="'card'"
+            [selectedCohort$]="selectedCohort$" [cohorts$]="cohorts$"></app-cohorts-list>
+    </div>
+    <div class="thread-selector-box" *ngIf="hasThreads$() | async">
+        <div *ngFor="let thread of threadsListSource$() | async">
+            <app-thread-selector [isSelected]="(selectedThread$ | async)?.id === thread.id"
                 (threadSelected)="onThreadSelected($event)" [thread]="thread"></app-thread-selector>
         </div>
     </div>
-    <div class="thread-viewer-box" *ngIf="getSelectedThread() | async">
-        <app-thread-viewer [thread]="getSelectedThread() | async"></app-thread-viewer>
+    <div class="thread-viewer-box" *ngIf="selectedThread$ | async">
+        <app-thread-viewer></app-thread-viewer>
     </div>
-    <mat-card class="multiselector-viewer-box">
-        <mat-card-header><mat-card-title>Bulk Send</mat-card-title></mat-card-header>
-        <mat-card-content>
-            <app-multi-contact-selector></app-multi-contact-selector>
-            <app-message-creator (onClick)="onClick($event)"></app-message-creator>
-        </mat-card-content>
-    </mat-card>
+    <div class="multiselector-viewer-box">
+        <app-bulk-send-component (bulkSend)="onBulkSend($event)"></app-bulk-send-component>
+    </div>
 </div>

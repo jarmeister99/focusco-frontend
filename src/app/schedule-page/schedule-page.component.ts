@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import ScheduledMessage from '../models/scheduled-message.model';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import Message from '../models/message.model';
 import User from '../models/user.model';
-import { ScheduleMessagesService } from '../services/schedule.messages.service';
 import { SimpleStateService } from '../services/simple-state.service';
+import { EditScheduledMessageFormPayload, EditScheduledMessageModalComponent } from '../shared_components/edit-scheduled-message-modal/edit-scheduled-message-modal';
+import { CohortsState } from '../state/cohorts.state';
+import { DeleteScheduledMessageAction, ScheduledMessagesState } from '../state/scheduledMessages.state';
+import { UsersState } from '../state/users.state';
 
 @Component({
   selector: 'app-schedule-page',
@@ -14,24 +19,67 @@ import { SimpleStateService } from '../services/simple-state.service';
 })
 export class SchedulePageComponent implements OnInit {
 
-  scheduledMessages: BehaviorSubject<ScheduledMessage[]> = new BehaviorSubject<ScheduledMessage[]>([]);
+  @Select(ScheduledMessagesState.scheduledMessages) scheduledMessages$!: Observable<Message[]>;
+  @Select(CohortsState.cohorts) cohorts$!: Observable<User[]>;
+
   dateFormControl: FormControl;
+  displayedColumns: string[] = ['name', 'body', 'mediaUrl', 'triggerAt', 'delete'];
+  cohortForm: FormGroup;
+  cohortFormReady = false;
 
-  constructor(private simpleState: SimpleStateService, private scheduleMessagesService: ScheduleMessagesService) {
+  constructor(private simpleState: SimpleStateService, private store: Store, private dialog: MatDialog, private formBuilder: FormBuilder) {
     this.dateFormControl = new FormControl(new Date());
-
+    this.cohortForm = formBuilder.group({});
   }
-
   ngOnInit(): void {
-    this.scheduleMessagesService.getScheduledMessagesOnInterval$().subscribe((scheduledMessages) => {
-      this.scheduledMessages.next(scheduledMessages);
+    this.cohorts$.subscribe((cohorts) => {
+      if (cohorts.length > 0) {
+        this.cohortForm.addControl('cohort', new FormControl(null));
+        this.cohortFormReady = true;
+      }
     });
   }
 
-  onSubmit($messagePayload: any) {
-    const messagePayload = $messagePayload;
-    const triggerAt = this.dateFormControl.value;
-    const receiverIds = this.simpleState.get().selectedItems.map((item: User) => item.id);
-    this.scheduleMessagesService.scheduleMessages(receiverIds, messagePayload, triggerAt).subscribe();
+
+  onDelete(message: Message) {
+    if (window.confirm(`Are you sure you want to delete this message?`)) {
+      this.store.dispatch(new DeleteScheduledMessageAction(message.id)).subscribe();
+    }
+  }
+  onClickEdit(message: Message) {
+    // TODO
+    const dialogData: EditScheduledMessageFormPayload = {
+      body: message.body,
+      mediaUrl: message.mediaUrl,
+      triggerAt: message.triggerAt!,
+      receiverName: message.receiver.name,
+      messageId: message.id,
+    }
+    this.dialog.open(EditScheduledMessageModalComponent, {
+      data: dialogData
+    });
+  }
+
+  isCohortSelected() {
+    return this.cohortForm.value.cohort;
+  }
+
+  getUsersInSelectedCohort() {
+    const cohort = this.cohortForm.value.cohort;
+    if (!cohort) return [];
+    const allUsers = this.store.selectSnapshot(UsersState.users);
+    const filteredUsers = allUsers.filter((user: User) => user.cohorts.some((userCohort) => userCohort.cohortId === cohort.id));
+    return filteredUsers;
+  }
+  getUsersInSelectedCohortTextString() {
+    const filteredUsers = this.getUsersInSelectedCohort();
+    if (filteredUsers.length === 0) return '';
+    const textString = filteredUsers.map((user: User) => user.name).join(', ');
+    return textString;
+  }
+
+  areContactsSelected() {
+    if (!this.simpleState.get().selectedItems) return false;
+    return this.simpleState.get().selectedItems.length > 0;
   }
 }

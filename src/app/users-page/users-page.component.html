@@ -1,7 +1,0 @@
-<div class="users-page-layout">
-    <div>
-        <app-edit-users-card *ngFor="let user of users$ | async" [user]="user"></app-edit-users-card>
-    </div>
-    <app-bulk-autoreply [users]="users$ | async"></app-bulk-autoreply>
-    <app-create-user></app-create-user>
-</div>

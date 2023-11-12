@@ -2,7 +2,6 @@
 
 .schedule-page-layout {
     @include padding;
-    width: 30em;
     @include flex-row;
 }
 .sender-container{
@@ -11,11 +10,17 @@
     min-width: 30em;
 }
 .scheduled-list-container{
-    min-width: 30em;
+    flex-grow: 1;
 }
 mat-card{
     padding: 1em;
     width: 100%;
+}
+mat-chip{
+    margin-left: 1em;
+
+}
+mat-tooltip{
 }
 ::ng-deep{
     .multiselect-dropdown{

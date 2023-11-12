@@ -1,25 +1,51 @@
 <div class="schedule-page-layout">
-    <div class="sender-container">
-        <mat-card>
-            <mat-card-title>
-                <h1>Schedule Messages</h1>
-            </mat-card-title>
-            <app-multi-contact-selector></app-multi-contact-selector>
-            <app-time-picker [formControl]="dateFormControl"></app-time-picker>
-            <div>
-                <app-message-creator (onClick)="onSubmit($event)"></app-message-creator>
-            </div>
-        </mat-card>
-    </div>
     <div class="scheduled-list-container">
-        <mat-card>
-            <mat-card-title>
-                <h1>Scheduled Messages</h1>
-            </mat-card-title>
-            <div *ngFor="let scheduledMessage of scheduledMessages | async; index as i">
-                <app-scheduled-message [scheduledMessage]="scheduledMessage"></app-scheduled-message>
-            </div>
-        </mat-card>
+        <table mat-table [dataSource]="(scheduledMessages$ | async)!" class="mat-elevation-z8">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.receiver.name}} </td>
+            </ng-container>
+
+            <!-- Body Column -->
+            <ng-container matColumnDef="body">
+                <th mat-header-cell *matHeaderCellDef> Body </th>
+                <td style="max-width: 25em; white-space: normal !important; word-wrap: break-word;" mat-cell
+                    *matCellDef="let element"> {{element.body}}
+                </td>
+            </ng-container>
+
+            <!-- Media URL Column -->
+            <ng-container matColumnDef="mediaUrl">
+                <th mat-header-cell *matHeaderCellDef> Media URL </th>
+                <td [matTooltip]="element.mediaUrl" style="max-width: 10em;" mat-cell *matCellDef="let element">
+                    {{element.mediaUrl}}
+                </td>
+            </ng-container>
+
+            <!-- TriggerAt Column -->
+            <ng-container matColumnDef="triggerAt">
+                <th mat-header-cell *matHeaderCellDef> Trigger At </th>
+                <td mat-cell *matCellDef="let element"> {{element.triggerAt | date:'short'}} </td>
+            </ng-container>
+
+            <!-- Delete Column -->
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="warn" (click)="onDelete(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="onClickEdit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
     </div>
 
 </div>

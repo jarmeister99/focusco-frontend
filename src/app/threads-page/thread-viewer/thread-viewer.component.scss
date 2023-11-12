@@ -1,6 +1,11 @@
 mat-card {
     overflow-y: auto;
-    height: 90vh;
+    max-height: 90vh;
+}
+mat-card-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 mat-divider {
     margin: 0.5em 0 0.5em 0;;

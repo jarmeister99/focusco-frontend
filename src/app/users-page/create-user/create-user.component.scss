@@ -1,9 +1,0 @@
-@import '../../mixins/core.scss';
-
-.create-users-component-layout{
-    @include padding;
-}
-
-mat-form-field {
-    margin-right: 0.5em;
-}

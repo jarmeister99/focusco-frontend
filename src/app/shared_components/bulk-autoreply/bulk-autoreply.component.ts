@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Store } from '@ngxs/store';
 import User from 'src/app/models/user.model';
 import { UsersService } from 'src/app/services/users.service';
+import { EditUsersAction } from 'src/app/state/users.actions';
 
 @Component({
   selector: 'app-bulk-autoreply',
@@ -14,7 +16,7 @@ export class BulkAutoreplyComponent {
 
   @Input() users!: User[] | undefined | null;
 
-  constructor(private formBuilder: FormBuilder, private usersService: UsersService) {
+  constructor(private formBuilder: FormBuilder, private usersService: UsersService, private store: Store) {
     this.autoreplyForm = this.formBuilder.group({
       autoreply: ''
     });
@@ -24,14 +26,15 @@ export class BulkAutoreplyComponent {
     if (!this.users) {
       return;
     }
-    // create an new user with the new autoreply value for each input user
-    const updatedUsers = this.users.map(user => {
+
+    const editUsersPayload = this.users.map(user => {
       return {
         id: user.id,
         autoreply: this.autoreplyForm.value.autoreply
       }
     });
-    this.usersService.updateUsers(updatedUsers).subscribe((users) => {
+
+    this.store.dispatch(new EditUsersAction(editUsersPayload)).subscribe(() => {
       this.autoreplyForm.reset();
     });
 
@@ -44,13 +47,14 @@ export class BulkAutoreplyComponent {
       return;
     }
     // create an new user with the new autoreply value for each input user
-    const updatedUsers = this.users.map(user => {
+    const editUsersPayload = this.users.map(user => {
       return {
         id: user.id,
         autoreply: ''
       }
     });
-    this.usersService.updateUsers(updatedUsers).subscribe(() => {
+
+    this.store.dispatch(new EditUsersAction(editUsersPayload)).subscribe(() => {
       this.autoreplyForm.reset();
     });
   }

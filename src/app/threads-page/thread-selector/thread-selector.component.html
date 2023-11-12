@@ -1,6 +1,11 @@
 <mat-card (click)="selectThread()" [ngClass]="isSelected ? 'selected' : ''">
     <mat-card-header>
         <mat-card-title>{{getContactName(thread)}}</mat-card-title>
+        <div>
+            <button style="top: -0.25em" mat-icon-button aria-label="Edit note button" (click)="onEdit()">
+                <mat-icon>edit_note</mat-icon>
+            </button>
+        </div>
     </mat-card-header>
     <mat-card-content>
         <p class="latest-message">{{getLatestMessage(thread)}}</p>

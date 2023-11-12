@@ -1,17 +1,26 @@
-import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+
+export interface MessageCreatorFormPayload {
+  body: string;
+  mediaUrl: string;
+}
 
 @Component({
   selector: 'app-message-creator',
   templateUrl: './message-creator.component.html',
   styleUrls: ['./message-creator.component.scss']
 })
-export class MessageCreatorComponent {
-  @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
+export class MessageCreatorComponent implements OnInit {
+  @Output() onClick: EventEmitter<MessageCreatorFormPayload> = new EventEmitter<MessageCreatorFormPayload>();
   formGroup: FormGroup;
 
   // create a ref for a html element within this component named emojiMart
   @ViewChild('emojiMart', { static: false, read: ElementRef }) emojiMart: any;
+
+  @Input() defaultBody: string = '';
+  @Input() defaultMediaUrl: string = '';
+  @Input() buttonDisabled: boolean = false;
 
   public linkInputVisible: boolean;
   public emojiMartVisible: boolean;
@@ -24,6 +33,13 @@ export class MessageCreatorComponent {
     this.linkInputVisible = false;
     this.emojiMartVisible = false;
   }
+
+  ngOnInit() {
+    this.formGroup.patchValue({
+      body: this.defaultBody,
+      mediaUrl: this.defaultMediaUrl,
+    });
+  };
 
   isFormValid() {
     return !!this.formGroup.value.body || !!this.formGroup.value.mediaUrl;

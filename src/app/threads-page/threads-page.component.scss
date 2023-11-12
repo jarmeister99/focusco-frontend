@@ -4,8 +4,13 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    max-width: 20em;
+    max-height: 90vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 1em;
+    width: 15em;
 
+    user-select: none;
     // margin bottom 1em to every element except last
     & > *:not(:last-child){
         margin-bottom: 1em;
@@ -19,8 +24,7 @@
 }
 
 .thread-viewer-box {
-    flex-grow: 1;
-    max-width: 40vw;
+    flex-grow: 1
 }
 .multiselector-viewer-box {
     ::ng-deep {

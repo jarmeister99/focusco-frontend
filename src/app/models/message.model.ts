@@ -12,4 +12,6 @@ export default interface Message {
     createdAt: Date;
     thread: Thread;
     isOwner?: boolean;
+    isSent?: boolean;
+    triggerAt?: Date;
 }

@@ -23,11 +23,12 @@ export class TimePickerComponent implements ControlValueAccessor {
   stepSecond: number = 1;
   touchUi: boolean = false;
   color: string = 'primary';
-  enableMeridian: boolean = false;
+  enableMeridian: boolean = true;
   disableMinute: boolean = false;
   hideTime: boolean = false;
 
   control = new FormControl('');
+
 
   writeValue(value: any): void {
     this.control.setValue(value);
