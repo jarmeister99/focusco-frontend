@@ -1,13 +1,17 @@
-<mat-card (click)="selectThread()" [ngClass]="isSelected ? 'selected' : ''">
+<mat-card (click)="selectThread()" [ngClass]="isSelected ? 'selected' : ''"
+    [ngClass]="hasUnreadMessage ? 'unread' : ''">
     <mat-card-header>
+        <mat-icon *ngIf="hasUnreadMessage"
+            style="position: absolute; right: 0.25em; top: 0.25em;">notifications</mat-icon>
         <mat-card-title>{{getContactName(thread)}}</mat-card-title>
         <div>
             <button style="top: -0.25em" mat-icon-button aria-label="Edit note button" (click)="onEdit()">
                 <mat-icon>edit_note</mat-icon>
             </button>
+
         </div>
     </mat-card-header>
     <mat-card-content>
-        <p class="latest-message">{{getLatestMessage(thread)}}</p>
+        <p class="latest-message">{{getLatestMessage(thread)?.body || ''}}</p>
     </mat-card-content>
 </mat-card>

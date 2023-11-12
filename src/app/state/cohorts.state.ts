@@ -173,7 +173,6 @@ export class CohortsState implements NgxsOnInit {
     @Action(ExportCohortMessagesAction)
     exportCohortMessages(ctx: StateContext<CohortsStateModel>, action: ExportCohortMessagesAction) {
         this.cohortsService.exportCohortMessages(action.cohortId).subscribe((data) => {
-            console.log(data)
             const blob = new Blob([data], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             window.open(url);

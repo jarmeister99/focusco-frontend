@@ -19,6 +19,7 @@ $selectedShadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0,
 }
 
 mat-card{
+    padding: 0.25em;
     overflow: hidden;
 }
 mat-card-content{
@@ -30,4 +31,7 @@ mat-card-header{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+mat-card-title{
+    overflow: clip;
 }

@@ -24,5 +24,14 @@ export function getLatestMessage(thread: Thread) {
         return (prev.createdAt > current.createdAt) ? prev : current
     });
 
+    return latestMessage || null;
+}
+
+export function getLatestMessageText(thread: Thread) {
+
+    let latestMessage = thread.messages.reduce((prev, current) => {
+        return (prev.createdAt > current.createdAt) ? prev : current
+    });
+
     return latestMessage?.body || "No Messages";
 }
