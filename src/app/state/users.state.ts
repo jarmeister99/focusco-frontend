@@ -4,6 +4,7 @@ import { mergeMap } from "rxjs";
 import User from "../models/user.model";
 import { UsersService } from "../services/users.service";
 import { GetAllCohortsAction } from "./cohorts.state";
+import { GetAllThreadsAction } from "./threads.state";
 import { CreateUserAction, DeleteUserAction, EditUserAction, EditUsersAction, GetAllUsersAction } from "./users.actions";
 
 export class UsersStateModel {
@@ -29,6 +30,7 @@ export class UsersState implements NgxsOnInit {
         return this.usersService.getAllUsers().subscribe(users => {
             ctx.patchState({ users });
             ctx.dispatch(new GetAllCohortsAction());
+            ctx.dispatch(new GetAllThreadsAction());
         });
     }
     @Selector()

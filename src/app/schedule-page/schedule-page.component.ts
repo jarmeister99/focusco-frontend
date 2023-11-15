@@ -5,7 +5,6 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import Message from '../models/message.model';
 import User from '../models/user.model';
-import { SimpleStateService } from '../services/simple-state.service';
 import { EditScheduledMessageFormPayload, EditScheduledMessageModalComponent } from '../shared_components/edit-scheduled-message-modal/edit-scheduled-message-modal';
 import { CohortsState } from '../state/cohorts.state';
 import { DeleteScheduledMessageAction, ScheduledMessagesState } from '../state/scheduledMessages.state';
@@ -15,7 +14,7 @@ import { UsersState } from '../state/users.state';
   selector: 'app-schedule-page',
   templateUrl: './schedule-page.component.html',
   styleUrls: ['./schedule-page.component.scss'],
-  providers: [SimpleStateService]
+  providers: []
 })
 export class SchedulePageComponent implements OnInit {
 
@@ -27,7 +26,7 @@ export class SchedulePageComponent implements OnInit {
   cohortForm: FormGroup;
   cohortFormReady = false;
 
-  constructor(private simpleState: SimpleStateService, private store: Store, private dialog: MatDialog, private formBuilder: FormBuilder) {
+  constructor(private store: Store, private dialog: MatDialog, private formBuilder: FormBuilder) {
     this.dateFormControl = new FormControl(new Date());
     this.cohortForm = formBuilder.group({});
   }
@@ -78,8 +77,4 @@ export class SchedulePageComponent implements OnInit {
     return textString;
   }
 
-  areContactsSelected() {
-    if (!this.simpleState.get().selectedItems) return false;
-    return this.simpleState.get().selectedItems.length > 0;
-  }
 }

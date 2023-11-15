@@ -25,7 +25,6 @@ export class ThreadSelectorComponent implements DoCheck {
   ngDoCheck(): void {
     const latestMessage = getLatestMessage(this.thread);
     if (window.localStorage.getItem(`thread${this.thread.id}LatestMessageId`) !== `${latestMessage.id}`) {
-      console.log('Unread message')
       this.hasUnreadMessage = true;
     }
     else {

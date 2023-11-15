@@ -78,7 +78,6 @@ export class ThreadViewerComponent implements AfterViewInit, AfterViewChecked {
       return;
     }
 
-
     this.dialog.open(UserNoteModalComponent, {
       data: { user: user }
     });

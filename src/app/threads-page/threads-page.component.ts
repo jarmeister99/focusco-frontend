@@ -4,7 +4,6 @@ import { Observable, combineLatest, map } from 'rxjs';
 import { Cohort } from '../models/cohort.model';
 import Thread from '../models/thread.model';
 import User from '../models/user.model';
-import { SimpleStateService } from '../services/simple-state.service';
 import { WebsocketService } from '../services/websocket.service';
 import { BulkSendComponentPayload } from '../shared_components/bulk-send-component/bulk-send-component.component';
 import { CohortsState, SelectCohortAction } from '../state/cohorts.state';
@@ -15,7 +14,7 @@ import { GetAllThreadsAction, SelectThreadAction, ThreadsState } from '../state/
   selector: 'app-threads-page',
   templateUrl: './threads-page.component.html',
   styleUrls: ['./threads-page.component.scss'],
-  providers: [SimpleStateService]
+  providers: []
 
 })
 export class ThreadsPageComponent implements OnInit {
