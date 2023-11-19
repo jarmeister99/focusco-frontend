@@ -1,11 +1,11 @@
 <div class="cohorts-page-layout">
     <div class="cohort-list-layout">
+        <button mat-raised-button color="primary" (click)="openCreateCohortModal()">Create Cohort</button>
         <div class="cohort-list-container">
             <app-cohorts-list [cohorts]="cohorts$ | async" (selectCohort)="onSelectCohort($event)"
                 (deleteCohort)="onDeleteCohort($event)" (exportCohort)="onExportCohort($event)">
             </app-cohorts-list>
         </div>
-        <button mat-raised-button color="primary" (click)="openCreateCohortModal()">Create Cohort</button>
     </div>
     <div *ngIf="selectedCohort$ | async">
         <app-cohort-users-grid [users$]="selectedUsers$" [usersNotInGrid$]="usersNotInGrid$"
