@@ -1,0 +1,26 @@
+<div *ngIf="cohorts" [ngClass]="getListContainerClasses()">
+    <mat-card [appearance]="'outlined'" [ngClass]="getListItemClasses(cohort)" *ngFor="let cohort of cohorts">
+        <mat-card-header class="justify-space-between">
+            <mat-card-title [ngClass]="getCardTitleClasses()" [matTooltipPosition]="'left'"
+                [matTooltipShowDelay]="tooltipShowDelay" [matTooltip]="cohort.name">{{cohort.name}}</mat-card-title>
+            <mat-card-subtitle [ngClass]="getCardSubtitleClasses()" [matTooltipPosition]="'left'"
+                [matTooltipShowDelay]="tooltipShowDelay"
+                [matTooltip]="cohort.description">{{cohort.description}}</mat-card-subtitle>
+            <mat-card-actions align="end">
+                <button (click)="onDeleteClick(cohort)" mat-icon-button aria-label="Delete button">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button disabled mat-icon-button aria-label="Edit button">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button aria-label="Export button" (click)="onExportClick(cohort)">
+                    <mat-icon>download</mat-icon>
+                </button>
+                <button mat-button (click)="onSelectClick(cohort)">
+                    Select
+                </button>
+
+            </mat-card-actions>
+        </mat-card-header>
+    </mat-card>
+</div>

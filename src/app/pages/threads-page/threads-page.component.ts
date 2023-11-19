@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest, map } from 'rxjs';
-import { Cohort } from '../models/cohort.model';
-import Thread from '../models/thread.model';
-import User from '../models/user.model';
-import { WebsocketService } from '../services/websocket.service';
-import { BulkSendComponentPayload } from '../shared_components/bulk-send-component/bulk-send-component.component';
-import { CohortsState, SelectCohortAction } from '../state/cohorts.state';
-import { CreateScheduledMessageAction } from '../state/scheduledMessages.state';
-import { GetAllThreadsAction, SelectThreadAction, ThreadsState } from '../state/threads.state';
+import { Cohort } from '../../models/cohort.model';
+import Thread from '../../models/thread.model';
+import User from '../../models/user.model';
+import { WebsocketService } from '../../services/websocket.service';
+import { BulkSendComponentPayload } from '../../shared-components/bulk-send-component/bulk-send-component.component';
+import { CohortsState } from '../../state/cohorts.state';
+import { CreateScheduledMessageAction } from '../../state/scheduledMessages.state';
+import { GetAllThreadsAction, SelectThreadAction, ThreadsState } from '../../state/threads.state';
 
 @Component({
   selector: 'app-threads-page',
@@ -18,7 +18,7 @@ import { GetAllThreadsAction, SelectThreadAction, ThreadsState } from '../state/
 
 })
 export class ThreadsPageComponent implements OnInit {
-  @Select(CohortsState.cohorts) cohorts$!: Observable<any>;
+  @Select(CohortsState.cohorts) cohorts$!: Observable<Cohort[]>;
   @Select(CohortsState.selectedCohort) selectedCohort$!: Observable<Cohort>;
   @Select(CohortsState.selectedUsers) selectedUsers$!: Observable<User[]>;
   @Select(ThreadsState.threads) threads$!: Observable<Thread[]>;
@@ -56,9 +56,6 @@ export class ThreadsPageComponent implements OnInit {
     this.store.dispatch(new CreateScheduledMessageAction(createScheduledMessagePayload))
   }
 
-  onSelectCohort(cohort: Cohort) {
-    this.store.dispatch(new SelectCohortAction(cohort)).subscribe();
-  }
 
   threadsListSource$() {
     if (this.store.selectSnapshot(CohortsState.selectedCohort)) {

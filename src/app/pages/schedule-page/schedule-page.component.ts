@@ -3,12 +3,12 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import Message from '../models/message.model';
-import User from '../models/user.model';
-import { EditScheduledMessageFormPayload, EditScheduledMessageModalComponent } from '../shared_components/edit-scheduled-message-modal/edit-scheduled-message-modal';
-import { CohortsState } from '../state/cohorts.state';
-import { DeleteScheduledMessageAction, ScheduledMessagesState } from '../state/scheduledMessages.state';
-import { UsersState } from '../state/users.state';
+import Message from 'src/app/models/message.model';
+import User from 'src/app/models/user.model';
+import { EditScheduledMessageFormPayload, EditScheduledMessageModalComponent } from 'src/app/shared-components/edit-scheduled-message-modal/edit-scheduled-message-modal';
+import { CohortsState } from 'src/app/state/cohorts.state';
+import { DeleteScheduledMessageAction, ScheduledMessagesState } from 'src/app/state/scheduledMessages.state';
+import { UsersState } from 'src/app/state/users.state';
 
 @Component({
   selector: 'app-schedule-page',

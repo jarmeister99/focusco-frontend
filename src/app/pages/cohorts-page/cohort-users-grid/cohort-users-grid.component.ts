@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import User from 'src/app/models/user.model';
-import { CreateUserModalComponent } from 'src/app/shared_components/create-user-modal/create-user-modal.component';
+import { CreateUserModalComponent } from 'src/app/shared-components/create-user-modal/create-user-modal.component';
 
 @Component({
   selector: 'app-cohort-users-grid',

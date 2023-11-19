@@ -1,15 +1,85 @@
 @mixin padding {
-    padding: 1em;
+    padding: 0.5em;
+}
+.padding {
+    padding: 0.5em;
+}
+.padding-bottom {
+    padding-bottom: 0.5em;
+}
+.margin-bottom {
+    margin-bottom: 1em;
+}
+.margin-top {
+    margin-top: 1em;
 }
 
 @mixin flex-row {
     display: flex;
     flex-direction: row;
-    gap: 1em;
+    gap: 0.5em;
 }
 @mixin flex-column {
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 0.5em;
     align-items: center;
 }
+
+@mixin selected-shadow {
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+@mixin transform-scale($scale, $transition-time) {
+    transform: scale($scale);
+    transition: transform $transition-time linear;
+}
+
+.justify-space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.selectable {
+    cursor: pointer;
+}
+
+.no-user-select {
+    user-select: none;
+}
+
+@mixin clamp-lines($lines) {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.full-height{
+    height: 100%;
+}
+
+.accent-text {
+    font-style: italic;
+}
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+.scrollable {
+    overflow-y: scroll;
+}
+

@@ -1,18 +1,14 @@
 <div class="threads-page-layout">
-    <div class="cohort-selector-box">
-        <app-cohorts-list [layout]="'column'" (selectCohort)="onSelectCohort($event)" [controlStyle]="'card'"
-            [selectedCohort$]="selectedCohort$" [cohorts$]="cohorts$"></app-cohorts-list>
-    </div>
-    <div class="thread-selector-box" *ngIf="hasThreads$() | async">
+    <div class="thread-selector-container" *ngIf="hasThreads$() | async">
         <div *ngFor="let thread of threadsListSource$() | async">
             <app-thread-selector [isSelected]="(selectedThread$ | async)?.id === thread.id"
                 (threadSelected)="onThreadSelected($event)" [thread]="thread"></app-thread-selector>
         </div>
     </div>
-    <div class="thread-viewer-box" *ngIf="selectedThread$ | async">
+    <div style="width:50%" class="thread-viewer-container" *ngIf="selectedThread$ | async">
         <app-thread-viewer></app-thread-viewer>
     </div>
-    <div class="multiselector-viewer-box">
+    <div class="multiselector-viewer-container">
         <app-bulk-send-component (bulkSend)="onBulkSend($event)"></app-bulk-send-component>
     </div>
 </div>

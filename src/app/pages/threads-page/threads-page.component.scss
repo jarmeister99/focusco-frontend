@@ -1,6 +1,9 @@
-@import '../mixins/core.scss';
+@import '../../mixins/core.scss';
 
-.thread-selector-box{
+.thread-viewer-container {
+}
+
+.thread-selector-container{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -19,18 +22,7 @@
 }
 .threads-page-layout {
     @include padding;
-    display: flex;
-    flex-direction: row;
-    gap: 1em;
+    @include flex-row;
+    align-items: flex-start;
 }
 
-.thread-viewer-box {
-    flex-grow: 1
-}
-.multiselector-viewer-box {
-    ::ng-deep {
-        .dropdown-btn{
-            width: 90% !important;
-        }
-    }
-}

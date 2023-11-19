@@ -1,0 +1,32 @@
+<mat-sidenav-container>
+    <mat-sidenav [fixedInViewport]="true" mode="side" opened [disableClose]="true">
+        <mat-nav-list>
+            <a mat-list-item routerLink="/login">Login</a>
+            <a mat-list-item routerLink="/threads">View Threads</a>
+            <a mat-list-item routerLink="/users">Contact Manager</a>
+            <a mat-list-item routerLink="/cohorts">Cohort Manager</a>
+            <a mat-list-item routerLink="/schedule">Scheduled Messages</a>
+            <a mat-list-item (click)="onExportClick()">Export Messages</a>
+            <mat-divider></mat-divider>
+        </mat-nav-list>
+        <mat-list>
+            <mat-list-item (click)="select.open()">
+                <mat-icon matListItemIcon>note</mat-icon>
+                <div matListItemTitle>Select a Cohort</div>
+                <div matListItemLine>
+                    <mat-select class="accent-text" #select [value]="(selectedCohort$ | async)" [disableRipple]="true"
+                        (valueChange)="onSelectCohort($event)"
+                        [placeholder]="(selectedCohort$ | async)?.name || 'All Cohorts'">
+                        <mat-option [value]="null" class="accent-text">All Cohorts</mat-option>
+                        <mat-option *ngFor="let cohort of cohorts$ | async" [value]="cohort">
+                            {{cohort.name}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+            </mat-list-item>
+        </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

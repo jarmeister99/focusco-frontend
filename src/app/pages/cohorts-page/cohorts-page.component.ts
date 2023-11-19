@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, combineLatest, map, startWith } from 'rxjs';
 import { Cohort } from 'src/app/models/cohort.model';
 import User from 'src/app/models/user.model';
-import { CreateCohortModalComponent } from 'src/app/shared_components/create-cohort-modal/create-cohort-modal.component';
+import { CreateCohortModalComponent } from 'src/app/shared-components/create-cohort-modal/create-cohort-modal.component';
 import { AddUsersToCohortAction, CohortsState, DeleteCohortAction, ExportCohortMessagesAction, RemoveUserFromCohortAction, SelectCohortAction } from 'src/app/state/cohorts.state';
 import { UsersState } from 'src/app/state/users.state';
 
@@ -46,7 +46,7 @@ export class CohortsPageComponent {
     }
   }
 
-  onSelectCohort(cohort: Cohort) {
+  onSelectCohort(cohort: Cohort | null) {
     this.store.dispatch(new SelectCohortAction(cohort)).subscribe();
   }
 

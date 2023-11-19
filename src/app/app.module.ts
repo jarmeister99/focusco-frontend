@@ -24,48 +24,48 @@ import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { NgxsModule } from '@ngxs/store';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { canActivate } from './guards/auth-guard';
-import { LoginPageComponent } from './login-page/login-page.component';
+import { ThreadSelectorComponent } from './pages/threads-page/thread-selector/thread-selector.component';
+import { ThreadViewerComponent } from './pages/threads-page/thread-viewer/thread-viewer.component';
+import { ThreadsPageComponent } from './pages/threads-page/threads-page.component';
 import { EditUsersCardComponent } from './pages/users-page/edit-users-card/edit-users-card.component';
 import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { OrderByPipe } from './pipes/order-by.pipe';
-import { SchedulePageComponent } from './schedule-page/schedule-page.component';
-import { ScheduledMessageComponent } from './schedule-page/scheduled-message/scheduled-message.component';
 import { MessagesService } from './services/messages.service';
 import { ScheduleMessagesService } from './services/schedule.messages.service';
 import { ThreadSelectorService } from './services/thread-selector.service';
 import { ThreadsService } from './services/threads.service';
 import { UsersService } from './services/users.service';
 import { WebsocketService } from './services/websocket.service';
-import { BulkAutoreplyComponent } from './shared_components/bulk-autoreply/bulk-autoreply.component';
-import { MessageCreatorComponent } from './shared_components/message-creator/message-creator.component';
-import { MessageListComponent } from './shared_components/message-list/message-list.component';
-import { MessageComponent } from './shared_components/message/message.component';
-import { TimePickerComponent } from './shared_components/time-picker/time-picker.component';
+import { BulkAutoreplyComponent } from './shared-components/bulk-autoreply/bulk-autoreply.component';
+import { MessageCreatorComponent } from './shared-components/message-creator/message-creator.component';
+import { MessageListComponent } from './shared-components/message-list/message-list.component';
+import { MessageComponent } from './shared-components/message/message.component';
+import { TimePickerComponent } from './shared-components/time-picker/time-picker.component';
 import { ScheduledMessagesState } from './state/scheduledMessages.state';
 import { ThreadsState } from './state/threads.state';
 import { UsersState } from './state/users.state';
-import { ThreadSelectorComponent } from './threads-page/thread-selector/thread-selector.component';
-import { ThreadViewerComponent } from './threads-page/thread-viewer/thread-viewer.component';
-import { ThreadsPageComponent } from './threads-page/threads-page.component';
 
 import { MatChipsModule } from '@angular/material/chips';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CohortUsersGridComponent } from './pages/cohorts-page/cohort-users-grid/cohort-users-grid.component';
-import { CohortsListComponent } from './pages/cohorts-page/cohorts-list/cohorts-list.component';
 import { CohortsPageComponent } from './pages/cohorts-page/cohorts-page.component';
-import { BulkSendComponentComponent } from './shared_components/bulk-send-component/bulk-send-component.component';
-import { CreateCohortModalComponent } from './shared_components/create-cohort-modal/create-cohort-modal.component';
-import { CreateUserModalComponent } from './shared_components/create-user-modal/create-user-modal.component';
-import { EditScheduledMessageModalComponent } from './shared_components/edit-scheduled-message-modal/edit-scheduled-message-modal';
-import { MultiselectUsersComponent } from './shared_components/multiselect-users/multiselect-users.component';
-import { CohortsState } from './state/cohorts.state';
-import { UserNoteModalComponent } from './shared_components/user-note-modal/user-note-modal.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { SchedulePageComponent } from './pages/schedule-page/schedule-page.component';
+import { ScheduledMessageComponent } from './pages/schedule-page/scheduled-message/scheduled-message.component';
 import { AutoreplyBadgeComponent } from './shared-components/autoreply-badge/autoreply-badge.component';
+import { BulkSendComponentComponent } from './shared-components/bulk-send-component/bulk-send-component.component';
+import { CohortsListComponent } from './shared-components/cohorts-list/cohorts-list.component';
+import { CreateCohortModalComponent } from './shared-components/create-cohort-modal/create-cohort-modal.component';
+import { CreateUserModalComponent } from './shared-components/create-user-modal/create-user-modal.component';
+import { EditScheduledMessageModalComponent } from './shared-components/edit-scheduled-message-modal/edit-scheduled-message-modal';
+import { MultiselectUsersComponent } from './shared-components/multiselect-users/multiselect-users.component';
+import { UserNoteModalComponent } from './shared-components/user-note-modal/user-note-modal.component';
+import { CohortsState } from './state/cohorts.state';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -94,13 +94,13 @@ import { AutoreplyBadgeComponent } from './shared-components/autoreply-badge/aut
     BulkSendComponentComponent,
     UserNoteModalComponent,
     AutoreplyBadgeComponent,
+    SidebarComponent,
   ],
   imports: [
     MatChipsModule,
     MatMenuModule,
     MatSelectModule,
     MatDialogModule,
-    MatDatepickerModule,
     MatNativeDateModule,
     BrowserModule,
     BrowserAnimationsModule,

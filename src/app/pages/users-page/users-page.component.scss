@@ -2,23 +2,10 @@
 
 .users-page-layout{
     @include padding;
-    @include flex-column;
     align-items: flex-start;
 }
 
-.cohort-selector-and-list-container{
-    @include flex-row;
-    width: 100%;
-    max-height: 80vh;
-
-}
-.cohort-selector-container{
-    overflow-y: scroll;
-}
 
 .user-list-container{
     padding-top: 1em;
-    overflow-y: scroll;
-}
-.user-controls-container{
 }

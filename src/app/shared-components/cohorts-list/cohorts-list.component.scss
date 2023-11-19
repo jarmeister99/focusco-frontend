@@ -1,0 +1,34 @@
+@import '../../mixins/core.scss';
+
+
+.flex-row {
+    @include flex-row;
+}
+.flex-column {
+    @include flex-column;
+    height: 90vh;
+}
+
+.list-container{
+    @include padding;
+}
+
+.list-item {
+    width: 100%;
+}
+
+.list-item.selected{
+    border: 1px solid gray;
+}
+.clamp-1-line {
+    @include clamp-lines(1);
+}
+.clamp-2-lines {
+    @include clamp-lines(2);
+}
+.clamp-3-lines {
+    @include clamp-lines(3);
+}
+
+
+

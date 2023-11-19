@@ -5,6 +5,7 @@ import User from "../models/user.model";
 import { CohortsService } from "../services/cohorts.service";
 import { WebsocketService } from "../services/websocket.service";
 import { GetAllUsersAction } from "./users.actions";
+import { UsersState, UsersStateModel } from "./users.state";
 
 export class ExportCohortMessagesAction {
     static readonly type = '[Cohorts] Export Cohort Messages';
@@ -47,7 +48,7 @@ export class RemoveUserFromCohortAction {
 
 export class SelectCohortAction {
     static readonly type = '[Cohorts] Select Cohort';
-    constructor(public cohort: Cohort) { }
+    constructor(public cohort: Cohort | null) { }
 }
 
 export class GetAllCohortsAction {
@@ -56,13 +57,13 @@ export class GetAllCohortsAction {
 
 export class CohortsStateModel {
     cohorts: Cohort[] = [];
-    selectedCohort?: Cohort;
+    selectedCohort: Cohort | null = null;;
 }
 @State<CohortsStateModel>({
     name: 'cohorts',
     defaults: {
         cohorts: [],
-        selectedCohort: undefined
+        selectedCohort: null
     }
 })
 @Injectable()
@@ -88,11 +89,6 @@ export class CohortsState implements NgxsOnInit {
                     });
                 }
             }
-            else {
-                ctx.patchState({
-                    selectedCohort: cohorts[0],
-                });
-            }
             ctx.patchState({
                 cohorts: cohorts,
             });
@@ -111,9 +107,9 @@ export class CohortsState implements NgxsOnInit {
         return state.selectedCohort;
     }
 
-    @Selector()
-    static selectedUsers(state: CohortsStateModel) {
-        return state.selectedCohort?.users.map((cohortUser) => cohortUser.user) || [];
+    @Selector([UsersState])
+    static selectedUsers(state: CohortsStateModel, userState: UsersStateModel) {
+        return state.selectedCohort?.users.map((cohortUser) => cohortUser.user) || userState.users;
     }
 
     @Selector()

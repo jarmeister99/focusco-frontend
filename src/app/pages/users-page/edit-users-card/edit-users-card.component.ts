@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import User from 'src/app/models/user.model';
-import { UserNoteModalComponent } from 'src/app/shared_components/user-note-modal/user-note-modal.component';
+import { UserNoteModalComponent } from 'src/app/shared-components/user-note-modal/user-note-modal.component';
 import { DeleteUserAction, EditUserAction } from 'src/app/state/users.actions';
 
 @Component({
