@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, distinctUntilChanged, interval, map, startWith, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import User from '../models/user.model';
 import { CreateUserPayload, EditUserPayload } from '../state/users.actions';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,44 +12,33 @@ import { CreateUserPayload, EditUserPayload } from '../state/users.actions';
 export class UsersService {
     API_URL = environment.API_BASE_URL + '/users';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private authService: AuthService) { }
 
     getAllUsers() {
-        return this.http.get(this.API_URL) as Observable<User[]>;
-    }
-
-    getUsersOnInterval$() {
-        return interval(500) // emits a value every 5 seconds
-            .pipe(
-                startWith(0), // starts immediately
-                switchMap(() => this.getUsers()), // switches to new inner observable when source emits, canceling any previous in-flight requests
-                map(users => JSON.stringify(users)), // maps the users to a JSON string
-                distinctUntilChanged(), // only emits when the current value is different than the last
-                map(usersString => JSON.parse(usersString)) // maps the JSON string back to an array of users
-            );
+        return this.http.get(this.API_URL, this.authService.getAuthHeaders()) as Observable<User[]>;
     }
 
     getOwner() {
-        return this.http.get(`${this.API_URL}/owner`) as Observable<User>;
+        return this.http.get(`${this.API_URL}/owner`, this.authService.getAuthHeaders()) as Observable<User>;
     }
 
     getUsers() {
-        return this.http.get(this.API_URL) as Observable<User[]>;
+        return this.http.get(this.API_URL, this.authService.getAuthHeaders()) as Observable<User[]>;
     }
 
     updateUser(id: number, user: EditUserPayload) {
-        return this.http.put(`${this.API_URL}/${id}`, user) as Observable<User>;
+        return this.http.put(`${this.API_URL}/${id}`, user, this.authService.getAuthHeaders()) as Observable<User>;
     }
 
     updateUsers(users: EditUserPayload[]) {
-        return this.http.put(this.API_URL, users) as Observable<User[]>;
+        return this.http.put(this.API_URL, users, this.authService.getAuthHeaders()) as Observable<User[]>;
     }
 
     createUser(createUserPayload: CreateUserPayload) {
-        return this.http.post(this.API_URL, createUserPayload) as Observable<User>;
+        return this.http.post(this.API_URL, createUserPayload, this.authService.getAuthHeaders()) as Observable<User>;
     }
 
     deleteUser(id: number) {
-        return this.http.delete(`${this.API_URL}/${id}`) as Observable<User>;
+        return this.http.delete(`${this.API_URL}/${id}`, this.authService.getAuthHeaders()) as Observable<User>;
     }
 }

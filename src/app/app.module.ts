@@ -64,8 +64,8 @@ import { CreateUserModalComponent } from './shared-components/create-user-modal/
 import { EditScheduledMessageModalComponent } from './shared-components/edit-scheduled-message-modal/edit-scheduled-message-modal';
 import { MultiselectUsersComponent } from './shared-components/multiselect-users/multiselect-users.component';
 import { UserNoteModalComponent } from './shared-components/user-note-modal/user-note-modal.component';
-import { CohortsState } from './state/cohorts.state';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { CohortsState } from './state/cohorts.state';
 
 @NgModule({
   declarations: [

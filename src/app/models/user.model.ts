@@ -9,7 +9,6 @@ export interface UserCohort {
 }
 
 export default interface User {
-    some(arg0: (user: any) => boolean): unknown;
     id: number,
     number: string
     name: string;
