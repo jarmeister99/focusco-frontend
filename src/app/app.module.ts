@@ -23,7 +23,6 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { NgxsModule } from '@ngxs/store';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { canActivate } from './guards/auth-guard';
 import { ThreadSelectorComponent } from './pages/threads-page/thread-selector/thread-selector.component';
 import { ThreadViewerComponent } from './pages/threads-page/thread-viewer/thread-viewer.component';
 import { ThreadsPageComponent } from './pages/threads-page/threads-page.component';
@@ -53,7 +52,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CohortUsersGridComponent } from './pages/cohorts-page/cohort-users-grid/cohort-users-grid.component';
 import { CohortsPageComponent } from './pages/cohorts-page/cohorts-page.component';
-import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { SchedulePageComponent } from './pages/schedule-page/schedule-page.component';
 import { ScheduledMessageComponent } from './pages/schedule-page/scheduled-message/scheduled-message.component';
 import { AutoreplyBadgeComponent } from './shared-components/autoreply-badge/autoreply-badge.component';
@@ -83,7 +81,6 @@ import { CohortsState } from './state/cohorts.state';
     SchedulePageComponent,
     ScheduledMessageComponent,
     OrderByPipe,
-    LoginPageComponent,
     EditScheduledMessageModalComponent,
     CohortsPageComponent,
     CohortsListComponent,
@@ -125,12 +122,11 @@ import { CohortsState } from './state/cohorts.state';
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: 'login', component: LoginPageComponent },
-      { path: 'threads', component: ThreadsPageComponent, canActivate: [canActivate] },
-      { path: 'users', component: UsersPageComponent, canActivate: [canActivate] },
-      { path: 'schedule', component: SchedulePageComponent, canActivate: [canActivate] },
-      { path: 'cohorts', component: CohortsPageComponent, canActivate: [canActivate] },
+      { path: '', redirectTo: 'threads', pathMatch: 'full' },
+      { path: 'threads', component: ThreadsPageComponent },
+      { path: 'users', component: UsersPageComponent },
+      { path: 'schedule', component: SchedulePageComponent },
+      { path: 'cohorts', component: CohortsPageComponent },
     ]),
     NgxsModule.forRoot([UsersState, ThreadsState, ScheduledMessagesState, CohortsState], {
     }),

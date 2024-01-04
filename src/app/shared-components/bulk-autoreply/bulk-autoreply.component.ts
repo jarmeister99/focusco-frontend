@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import User from 'src/app/models/user.model';
-import { UsersService } from 'src/app/services/users.service';
 import { EditUsersAction } from 'src/app/state/users.actions';
 
 @Component({
@@ -16,7 +15,7 @@ export class BulkAutoreplyComponent {
 
   @Input() users!: User[] | undefined | null;
 
-  constructor(private formBuilder: FormBuilder, private usersService: UsersService, private store: Store) {
+  constructor(private formBuilder: FormBuilder, private store: Store) {
     this.autoreplyForm = this.formBuilder.group({
       autoreply: ''
     });
