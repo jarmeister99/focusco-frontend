@@ -1,5 +1,5 @@
 <div class="text-width" [ngClass]="senderIsViewing ? 'right' : 'left'">
-    <p>{{ message.createdAt | date : 'short' }}</p>
+    <p>{{ message.updatedAt | date : 'short' }}</p>
     <ng-container *ngIf="message.mediaUrl">
         <ng-container *ngIf="!isVCF(); else vcf">
             <p [matTooltip]="message.mediaUrl">URL: {{ message.mediaUrl | slice:0:30 }} </p>

@@ -21,7 +21,7 @@ export function getContactNumber(thread: Thread) {
 export function getLatestMessage(thread: Thread) {
 
     let latestMessage = thread.messages.reduce((prev, current) => {
-        return (prev.createdAt > current.createdAt) ? prev : current
+        return (prev.updatedAt > current.updatedAt) ? prev : current
     });
 
     return latestMessage || null;
@@ -30,7 +30,7 @@ export function getLatestMessage(thread: Thread) {
 export function getLatestMessageText(thread: Thread) {
 
     let latestMessage = thread.messages.reduce((prev, current) => {
-        return (prev.createdAt > current.createdAt) ? prev : current
+        return (prev.updatedAt > current.updatedAt) ? prev : current
     });
 
     return latestMessage?.body || "No Messages";

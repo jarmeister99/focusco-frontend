@@ -10,6 +10,7 @@ export default interface Message {
     receiver: User;
     receiverId: number;
     createdAt: Date;
+    updatedAt: Date;
     thread: Thread;
     isOwner?: boolean;
     isSent?: boolean;

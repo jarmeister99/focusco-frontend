@@ -8,7 +8,7 @@ export class OrderByPipe implements PipeTransform {
 
   transform(messages: Message[], ...args: unknown[]): Message[] {
     return messages.sort((a, b) => {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
     });
   }
 }
