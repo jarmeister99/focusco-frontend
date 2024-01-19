@@ -3,8 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import Message from 'src/app/models/message.model';
-import User from 'src/app/models/user.model';
+import { ScheduledMessage, User } from 'src/app/models/prisma.models';
 import { EditScheduledMessageFormPayload, EditScheduledMessageModalComponent } from 'src/app/shared-components/edit-scheduled-message-modal/edit-scheduled-message-modal';
 import { CohortsState } from 'src/app/state/cohorts.state';
 import { DeleteScheduledMessageAction, ScheduledMessagesState } from 'src/app/state/scheduledMessages.state';
@@ -18,7 +17,7 @@ import { UsersState } from 'src/app/state/users.state';
 })
 export class SchedulePageComponent implements OnInit {
 
-  @Select(ScheduledMessagesState.scheduledMessages) scheduledMessages$!: Observable<Message[]>;
+  @Select(ScheduledMessagesState.scheduledMessages) scheduledMessages$!: Observable<ScheduledMessage[]>;
   @Select(CohortsState.cohorts) cohorts$!: Observable<User[]>;
 
   dateFormControl: FormControl;
@@ -40,16 +39,16 @@ export class SchedulePageComponent implements OnInit {
   }
 
 
-  onDelete(message: Message) {
+  onDelete(message: ScheduledMessage) {
     if (window.confirm(`Are you sure you want to delete this message?`)) {
       this.store.dispatch(new DeleteScheduledMessageAction(message.id)).subscribe();
     }
   }
-  onClickEdit(message: Message) {
+  onClickEdit(message: ScheduledMessage) {
     // TODO
     const dialogData: EditScheduledMessageFormPayload = {
-      body: message.body,
-      mediaUrl: message.mediaUrl,
+      body: message.messageTemplate.body,
+      mediaUrl: message.messageTemplate.mediaUrl,
       triggerAt: message.triggerAt!,
       receiverName: message.receiver.name,
       messageId: message.id,

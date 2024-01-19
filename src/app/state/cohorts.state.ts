@@ -21,14 +21,14 @@ export class UnselectCohortAction {
     static readonly type = '[Cohorts] Unselect Cohort';
 }
 
-export interface CreateCohortPayload {
+export interface CreateCohortActionPayload {
     name: string;
     description: string;
-    users: User[];
+    userIds: number[];
 }
 export class CreateCohortAction {
     static readonly type = '[Cohorts] Create Cohort';
-    constructor(public payload: CreateCohortPayload) { }
+    constructor(public payload: CreateCohortActionPayload) { }
 }
 
 export class AddUsersToCohortAction {

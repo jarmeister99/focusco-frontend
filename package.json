@@ -1,6 +1,9 @@
 {
   "name": "frontend",
   "version": "0.0.0",
+  "paths": {
+    "sharedlib": ["../shared-lib/dist"]
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -29,7 +32,8 @@
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.7.2",
     "tslib": "^2.3.0",
-    "zone.js": "~0.13.0"
+    "zone.js": "~0.13.0",
+    "focusco-lib": "file:../focusco-lib"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.5",

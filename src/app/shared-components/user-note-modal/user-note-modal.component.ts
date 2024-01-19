@@ -3,7 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
-import User from 'src/app/models/user.model';
+import { User } from 'src/app/models/prisma.models';
 import { EditUserAction } from 'src/app/state/users.actions';
 
 export interface UserNoteModalComponentData {

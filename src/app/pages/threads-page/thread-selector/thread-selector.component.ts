@@ -1,9 +1,9 @@
 import { Component, DoCheck, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import Message from 'src/app/models/message.model';
-import Thread from 'src/app/models/thread.model';
+import { ThreadModel } from 'src/app/models/models';
+import { SentMessage } from 'src/app/models/prisma.models';
 import { UserNoteModalComponent } from 'src/app/shared-components/user-note-modal/user-note-modal.component';
-import { getContactName, getLatestMessage } from 'src/app/utilities/threadUtils';
+import { clientHasUnreadMessage, getContactName, getLatestMessage } from 'src/app/utilities/threadUtils';
 
 @Component({
   selector: 'app-thread-selector',
@@ -11,20 +11,19 @@ import { getContactName, getLatestMessage } from 'src/app/utilities/threadUtils'
   styleUrls: ['./thread-selector.component.scss']
 })
 export class ThreadSelectorComponent implements DoCheck {
-  @Input() thread!: Thread;
-  @Input() isSelected!: boolean;
-  @Output() threadSelected = new EventEmitter<Thread>();
+  getContactName: (thread: ThreadModel) => string = getContactName;
+  getLatestMessage: (thread: ThreadModel) => SentMessage | null = getLatestMessage;
 
-  getContactName: (thread: Thread) => string = getContactName;
-  getLatestMessage: (thread: Thread) => Message | null = getLatestMessage;
+  @Input() thread!: ThreadModel;
+  @Input() isSelected!: boolean;
+  @Output() threadSelected = new EventEmitter<ThreadModel>();
 
   hasUnreadMessage: boolean = false;
 
-  constructor(private dialog: MatDialog) {
-  }
+  constructor(private dialog: MatDialog) { }
+
   ngDoCheck(): void {
-    const latestMessage = getLatestMessage(this.thread);
-    if (window.localStorage.getItem(`thread${this.thread.id}LatestMessageId`) !== `${latestMessage.id}`) {
+    if (clientHasUnreadMessage(this.thread)) {
       this.hasUnreadMessage = true;
     }
     else {
@@ -37,8 +36,9 @@ export class ThreadSelectorComponent implements DoCheck {
   }
 
   selectedUser() {
-    return this.thread.participants.find((p) => !p.isOwner);
+    return this.thread.user;
   }
+
   onEdit() {
     this.dialog.open(UserNoteModalComponent, {
       data: {

@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Observable, combineLatest, map } from 'rxjs';
-import { Cohort } from '../../models/cohort.model';
-import Thread from '../../models/thread.model';
-import User from '../../models/user.model';
+import { Observable, Subject } from 'rxjs';
+import { ThreadModel } from 'src/app/models/models';
+import { SentMessage } from 'src/app/models/prisma.models';
+import { BulkSendComponentPayload } from 'src/app/shared-components/bulk-send-component/bulk-send-component.component';
+import { GetMessagesAction, MessagesState } from 'src/app/state/messages.state';
 import { WebsocketService } from '../../services/websocket.service';
-import { BulkSendComponentPayload } from '../../shared-components/bulk-send-component/bulk-send-component.component';
-import { CohortsState } from '../../state/cohorts.state';
-import { CreateScheduledMessageAction } from '../../state/scheduledMessages.state';
-import { GetAllThreadsAction, SelectThreadAction, ThreadsState } from '../../state/threads.state';
+
+
 
 @Component({
   selector: 'app-threads-page',
@@ -18,56 +17,51 @@ import { GetAllThreadsAction, SelectThreadAction, ThreadsState } from '../../sta
 
 })
 export class ThreadsPageComponent implements OnInit {
-  @Select(CohortsState.cohorts) cohorts$!: Observable<Cohort[]>;
-  @Select(CohortsState.selectedCohort) selectedCohort$!: Observable<Cohort>;
-  @Select(CohortsState.selectedUsers) selectedUsers$!: Observable<User[]>;
-  @Select(ThreadsState.threads) threads$!: Observable<Thread[]>;
-  @Select(ThreadsState.selectedThread) selectedThread$!: Observable<Thread | undefined>;
+  @Select(MessagesState.messages) messages$!: Observable<SentMessage[]>;
 
-  threadsInSelectedCohort$!: Observable<Thread[]>;
+  loadData$: Subject<void> = new Subject();
 
-  constructor(private websocketService: WebsocketService, private store: Store) {
-    this.threadsInSelectedCohort$ = combineLatest([this.selectedUsers$, this.threads$]).pipe(
-      map(([selectedUsers, threads]) =>
-        threads.filter(thread =>
-          thread.participants.some(participant =>
-            selectedUsers.some(user => user.id === participant.id)
-          )
-        )
-      )
-    );
-  }
+  threads: ThreadModel[] = [];
+  selectedThread: ThreadModel | null | undefined = null;
+
+  constructor(private websocketService: WebsocketService, private store: Store) { }
+
   ngOnInit(): void {
-    this.store.dispatch(new GetAllThreadsAction()).subscribe();
     this.websocketService.onMessage().subscribe(() => {
-      this.store.dispatch(new GetAllThreadsAction()).subscribe();
+      this.loadData$.next();
     });
-  }
-  onThreadSelected(thread: Thread) {
-    this.store.dispatch(new SelectThreadAction(thread)).subscribe();
-  }
+    this.loadData$.subscribe(() => {
+      this.store.dispatch(new GetMessagesAction()).subscribe();
+    });
+    this.messages$.subscribe(messages => {
+      this.threads = this.getThreadsFromMessages(messages);
+    });
 
-  onBulkSend(payload: BulkSendComponentPayload) {
-    const createScheduledMessagePayload = {
-      receiverIds: payload.receivers.map((user) => user.id),
-      triggerAt: payload.triggerAt,
-      messagePayload: payload.messagePayload
-    }
-    this.store.dispatch(new CreateScheduledMessageAction(createScheduledMessagePayload))
+    this.loadData$.next();
   }
 
-
-  threadsListSource$() {
-    if (this.store.selectSnapshot(CohortsState.selectedCohort)) {
-      return this.threadsInSelectedCohort$;
-    } else {
-      return this.threads$;
-    }
+  private getThreadsFromMessages(messages: SentMessage[]) {
+    const threads: ThreadModel[] = [];
+    messages.forEach(message => {
+      const thread = threads.find(thread => thread.user.id === message.receiver.id);
+      if (thread) {
+        thread.messages.push(message);
+      } else {
+        this.threads.push({
+          messages: [message],
+          user: message.receiver
+        });
+      }
+    });
+    return threads;
   }
 
-  hasThreads$() {
-    return this.threadsListSource$().pipe(
-      map((threads) => threads.length > 0)
-    )
+  onBulkSend($event: BulkSendComponentPayload) {
+    console.log($event);
+  }
+
+  onThreadSelected($event: ThreadModel) {
+    const selectedUser = $event.user;
+    this.selectedThread = this.threads.find(thread => thread.user.id === selectedUser.id);
   }
 }

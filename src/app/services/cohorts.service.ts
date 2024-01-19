@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AddUserToCohortAPIResponse, AddUserToCohortDto, CreateCohortAPIResponse, CreateCohortDto, DeleteCohortAPIResponse, DeleteCohortDto, ExportCohortMessagesDto, GetAllCohortsAPIResponse, RemoveUserFromCohortAPIResponse, RemoveUserFromCohortDto } from 'focusco-lib';
 import { environment } from 'src/environments/environment';
-import { Cohort } from '../models/cohort.model';
-import { CreateCohortPayload } from '../state/cohorts.state';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -14,21 +13,21 @@ export class CohortsService {
     constructor(private http: HttpClient, private authService: AuthService) { }
 
     getAllCohorts() {
-        return this.http.get<Cohort[]>(this.API_URL, this.authService.getAuthHeaders());
+        return this.http.get<GetAllCohortsAPIResponse>(this.API_URL, this.authService.getAuthHeaders());
     }
-    createCohort(payload: CreateCohortPayload) {
-        return this.http.post(this.API_URL, payload, this.authService.getAuthHeaders());
+    createCohort(payload: CreateCohortDto) {
+        return this.http.post<CreateCohortAPIResponse>(this.API_URL, payload, this.authService.getAuthHeaders());
     }
-    addUserToCohort(userId: number, cohortId: number) {
-        return this.http.post(this.API_URL + '/addUser', { userId, cohortId }, this.authService.getAuthHeaders());
+    addUserToCohort(payload: AddUserToCohortDto) {
+        return this.http.post<AddUserToCohortAPIResponse>(this.API_URL + '/' + payload.cohortId + '/addUser', { userId: payload.userId }, this.authService.getAuthHeaders());
     }
-    removeUserFromCohort(userId: number, cohortId: number) {
-        return this.http.post(this.API_URL + '/removeUser', { userId, cohortId }, this.authService.getAuthHeaders());
+    removeUserFromCohort(payload: RemoveUserFromCohortDto) {
+        return this.http.post<RemoveUserFromCohortAPIResponse>(this.API_URL + '/' + payload.cohortId + '/removeUser', { userId: payload.userId }, this.authService.getAuthHeaders());
     }
-    deleteCohort(cohortId: number) {
-        return this.http.delete(this.API_URL + '/' + cohortId, this.authService.getAuthHeaders());
+    deleteCohort(payload: DeleteCohortDto) {
+        return this.http.delete<DeleteCohortAPIResponse>(this.API_URL + '/' + payload.cohortId, this.authService.getAuthHeaders());
     }
-    exportCohortMessages(cohortId: number) {
-        return this.http.get(this.API_URL + '/' + cohortId + '/export', { responseType: 'blob', ...this.authService.getAuthHeaders() });
+    exportCohortMessagespayload(payload: ExportCohortMessagesDto) {
+        return this.http.get(this.API_URL + '/' + payload.cohortId + '/export', { responseType: 'blob', ...this.authService.getAuthHeaders() });
     }
 }

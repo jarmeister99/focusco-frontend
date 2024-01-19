@@ -1,37 +1,25 @@
-import Thread from "../models/thread.model";
+import { ThreadModel } from "../models/models";
 
-export function getContactName(thread: Thread) {
-    // find this.thread.participant that does not have isOwner = True
-    // return that participant's name
-    // if no participant has isOwner = True, return "No Contact"
-
-    let contact = thread.participants.find(p => p.isOwner == false);
-    return contact?.name || contact?.number || "No Contact";
+export function getContactName(thread: ThreadModel) {
+    return thread.user.name || "No Contact";
 }
 
-export function getContactNumber(thread: Thread) {
-    // find this.thread.participant that does not have isOwner = True
-    // return that participant's number
-    // if no participant has isOwner = True, return "No Number"
-
-    let contact = thread.participants.find(p => p.isOwner == false);
-    return contact?.number || "No Number";
+export function getContactNumber(thread: ThreadModel) {
+    return thread.user.number;
 }
 
-export function getLatestMessage(thread: Thread) {
-
-    let latestMessage = thread.messages.reduce((prev, current) => {
-        return (prev.updatedAt > current.updatedAt) ? prev : current
+export function getLatestMessage(thread: ThreadModel) {
+    return thread.messages.reduce((prev, current) => {
+        return (prev.createdAt > current.createdAt) ? prev : current
     });
-
-    return latestMessage || null;
 }
 
-export function getLatestMessageText(thread: Thread) {
+export function clientMarkThreadAsSeen(thread: ThreadModel) {
+    const latestMessage = getLatestMessage(thread);
+    window.localStorage.setItem(`thread-${thread.user.number}-LatestMessageId`, `${latestMessage.id}`);
+}
 
-    let latestMessage = thread.messages.reduce((prev, current) => {
-        return (prev.updatedAt > current.updatedAt) ? prev : current
-    });
-
-    return latestMessage?.body || "No Messages";
+export function clientHasUnreadMessage(thread: ThreadModel) {
+    const latestMessage = getLatestMessage(thread);
+    return window.localStorage.getItem(`thread-${thread.user.number}-LatestMessageId`) !== `${latestMessage.id}`;
 }

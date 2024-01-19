@@ -1,63 +1,38 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, Renderer2 } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import Message from 'src/app/models/message.model';
-import Thread from 'src/app/models/thread.model';
+import { Store } from '@ngxs/store';
+import { ThreadModel } from 'src/app/models/models';
+import { SentMessage } from 'src/app/models/prisma.models';
 import { MessagesService } from 'src/app/services/messages.service';
 import { MessageCreatorFormPayload } from 'src/app/shared-components/message-creator/message-creator.component';
 import { UserNoteModalComponent } from 'src/app/shared-components/user-note-modal/user-note-modal.component';
-import { SendMessageAction, ThreadsState } from 'src/app/state/threads.state';
+import { SendMessageAction, SendMessageActionPayload } from 'src/app/state/messages.state';
 import { UsersState } from 'src/app/state/users.state';
-import { getContactName, getContactNumber, getLatestMessage, getLatestMessageText } from 'src/app/utilities/threadUtils';
+import { clientHasUnreadMessage, clientMarkThreadAsSeen, getContactName, getContactNumber, getLatestMessage } from 'src/app/utilities/threadUtils';
 @Component({
   selector: 'app-thread-viewer',
   templateUrl: './thread-viewer.component.html',
   styleUrls: ['./thread-viewer.component.scss']
 })
 export class ThreadViewerComponent implements AfterViewInit, AfterViewChecked {
-  @Select(ThreadsState.threads) threads$!: Observable<Thread[]>;
-  @Select(ThreadsState.selectedThread) selectedThread$!: Observable<Thread | undefined>;
-  selectedThread!: Thread;
+  getContactName = getContactName;
+  getContactNumber = getContactNumber;
+  getLatestMessage = getLatestMessage;
 
-  getContactName: (thread: Thread) => string = getContactName;
-  getContactNumber: (thread: Thread) => string = getContactNumber;
-  getLatestMessage: (thread: Thread) => Message | null = getLatestMessage;
-  getLatestMessageText: (thread: Thread) => string = getLatestMessageText;
+  @Input() thread!: ThreadModel;
 
-  latestMessage: Message | null = null;
-  constructor(private store: Store, private messagesService: MessagesService, private elementRef: ElementRef, private renderer: Renderer2, private dialog: MatDialog) {
-    this.selectedThread$.subscribe((thread) => {
-      if (!thread) {
-        return;
-      }
-      this.selectedThread = thread;
-    });
-  }
+  latestMessage: SentMessage | null = null;
 
-  onClick($event: MessageCreatorFormPayload) {
-    const senderId = this.store.selectSnapshot(UsersState.owner)?.id;
-    const receiverId = this.selectedThread.participants.find((p) => !p.isOwner)?.id;
+  constructor(private store: Store, private messagesService: MessagesService, private elementRef: ElementRef, private renderer: Renderer2, private dialog: MatDialog) { }
 
-    if (!senderId || !receiverId) {
-      return;
-    }
-
-    const messagePayload = {
-      senderId,
-      receiverId,
-      body: $event.body,
-      mediaUrl: $event.mediaUrl
-    }
-    this.store.dispatch(new SendMessageAction(messagePayload)).subscribe();
-  }
   ngAfterViewChecked() {
     // For thread ID, store this message ID in localstorage
-    const latestMessage = getLatestMessage(this.selectedThread);
+    const latestMessage = getLatestMessage(this.thread);
 
-    if (window.localStorage.getItem(`thread${this.selectedThread.id}LatestMessageId`) !== `${latestMessage.id}`) {
-      window.localStorage.setItem(`thread${this.selectedThread.id}LatestMessageId`, `${latestMessage.id}`);
+    if (!(clientHasUnreadMessage(this.thread))) {
+      clientMarkThreadAsSeen(this.thread)
     }
+
 
     if (this.latestMessage !== latestMessage) {
       this.latestMessage = latestMessage;
@@ -67,24 +42,26 @@ export class ThreadViewerComponent implements AfterViewInit, AfterViewChecked {
   ngAfterViewInit() {
     this.scrollToBottom();
   }
-  scrollToBottom(): void {
+
+  private scrollToBottom(): void {
     const scrollContainer = this.elementRef.nativeElement.querySelector('mat-card');
     this.renderer.setProperty(scrollContainer, 'scrollTop', scrollContainer.scrollHeight);
   }
 
-  onEdit() {
-    const user = this.selectedThread.participants.find((p) => !p.isOwner);
-    if (!user) {
-      return;
-    }
 
+  onClickEditUserNoteButton() {
     this.dialog.open(UserNoteModalComponent, {
-      data: { user: user }
+      data: { user: this.thread.user }
     });
   }
 
-  selectedUser() {
-    return this.selectedThread.participants.find((p) => !p.isOwner);
+  onClickSendMessageButton($event: MessageCreatorFormPayload) {
+    const sendMessagePayload: SendMessageActionPayload = {
+      body: $event.body,
+      mediaUrl: $event.mediaUrl,
+      receiverId: this.thread.user.id,
+      senderId: this.store.selectSnapshot(UsersState.owner).id
+    }
+    this.store.dispatch(new SendMessageAction(sendMessagePayload));
   }
-
 }

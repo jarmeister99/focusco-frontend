@@ -12,15 +12,16 @@
             <ng-container matColumnDef="body">
                 <th mat-header-cell *matHeaderCellDef> Body </th>
                 <td style="max-width: 25em; white-space: normal !important; word-wrap: break-word;" mat-cell
-                    *matCellDef="let element"> {{element.body}}
+                    *matCellDef="let element"> {{element.messageTemplate.body}}
                 </td>
             </ng-container>
 
             <!-- Media URL Column -->
             <ng-container matColumnDef="mediaUrl">
                 <th mat-header-cell *matHeaderCellDef> Media URL </th>
-                <td [matTooltip]="element.mediaUrl" style="max-width: 10em;" mat-cell *matCellDef="let element">
-                    {{element.mediaUrl}}
+                <td [matTooltip]="element.messageTemplate.mediaUrl" style="max-width: 10em;" mat-cell
+                    *matCellDef="let element">
+                    {{element.messageTemplate.mediaUrl}}
                 </td>
             </ng-container>
 

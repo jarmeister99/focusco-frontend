@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import User from 'src/app/models/user.model';
+import { User } from 'src/app/models/prisma.models';
 import { CreateUserModalComponent } from 'src/app/shared-components/create-user-modal/create-user-modal.component';
 
 @Component({

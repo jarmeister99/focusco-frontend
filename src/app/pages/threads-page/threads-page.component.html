@@ -1,14 +1,13 @@
-<div class="threads-page-layout">
-    <div class="thread-selector-container" *ngIf="hasThreads$() | async">
-        <div *ngFor="let thread of threadsListSource$() | async">
-            <app-thread-selector [isSelected]="(selectedThread$ | async)?.id === thread.id"
-                (threadSelected)="onThreadSelected($event)" [thread]="thread"></app-thread-selector>
-        </div>
+<div id="threads-page-container">
+    <div id="thread-selector-container">
+        <ng-container *ngFor="let thread of threads">
+            <app-thread-selector (threadSelected)="onThreadSelected($event)" [thread]="thread"></app-thread-selector>
+        </ng-container>
     </div>
-    <div style="width:50%" class="thread-viewer-container" *ngIf="selectedThread$ | async">
-        <app-thread-viewer></app-thread-viewer>
+    <div id="thread-viewer-container">
+        <app-thread-viewer *ngIf="selectedThread" [thread]="selectedThread"></app-thread-viewer>
     </div>
-    <div class="multiselector-viewer-container">
+    <div id="multiselector-viewer-container">
         <app-bulk-send-component (bulkSend)="onBulkSend($event)"></app-bulk-send-component>
     </div>
 </div>

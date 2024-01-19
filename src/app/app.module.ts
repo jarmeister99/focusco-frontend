@@ -31,8 +31,6 @@ import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { MessagesService } from './services/messages.service';
 import { ScheduleMessagesService } from './services/schedule.messages.service';
-import { ThreadSelectorService } from './services/thread-selector.service';
-import { ThreadsService } from './services/threads.service';
 import { UsersService } from './services/users.service';
 import { WebsocketService } from './services/websocket.service';
 import { BulkAutoreplyComponent } from './shared-components/bulk-autoreply/bulk-autoreply.component';
@@ -41,7 +39,6 @@ import { MessageListComponent } from './shared-components/message-list/message-l
 import { MessageComponent } from './shared-components/message/message.component';
 import { TimePickerComponent } from './shared-components/time-picker/time-picker.component';
 import { ScheduledMessagesState } from './state/scheduledMessages.state';
-import { ThreadsState } from './state/threads.state';
 import { UsersState } from './state/users.state';
 
 import { MatChipsModule } from '@angular/material/chips';
@@ -53,7 +50,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CohortUsersGridComponent } from './pages/cohorts-page/cohort-users-grid/cohort-users-grid.component';
 import { CohortsPageComponent } from './pages/cohorts-page/cohorts-page.component';
 import { SchedulePageComponent } from './pages/schedule-page/schedule-page.component';
-import { ScheduledMessageComponent } from './pages/schedule-page/scheduled-message/scheduled-message.component';
 import { AutoreplyBadgeComponent } from './shared-components/autoreply-badge/autoreply-badge.component';
 import { BulkSendComponentComponent } from './shared-components/bulk-send-component/bulk-send-component.component';
 import { CohortsListComponent } from './shared-components/cohorts-list/cohorts-list.component';
@@ -79,7 +75,6 @@ import { CohortsState } from './state/cohorts.state';
     BulkAutoreplyComponent,
     TimePickerComponent,
     SchedulePageComponent,
-    ScheduledMessageComponent,
     OrderByPipe,
     EditScheduledMessageModalComponent,
     CohortsPageComponent,
@@ -128,10 +123,10 @@ import { CohortsState } from './state/cohorts.state';
       { path: 'schedule', component: SchedulePageComponent },
       { path: 'cohorts', component: CohortsPageComponent },
     ]),
-    NgxsModule.forRoot([UsersState, ThreadsState, ScheduledMessagesState, CohortsState], {
+    NgxsModule.forRoot([UsersState, ScheduledMessagesState, CohortsState], {
     }),
   ],
-  providers: [ThreadsService, ThreadSelectorService, MessagesService, UsersService, ScheduleMessagesService, WebsocketService],
+  providers: [MessagesService, UsersService, ScheduleMessagesService, WebsocketService],
   bootstrap: [AppComponent],
 })
 export class AppModule {
